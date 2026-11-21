@@ -1,0 +1,259 @@
+/* KATTA PLANSHeT VA KICHIK NOUTBUKLAR */
+
+@media (max-width: 1100px) {
+    .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .navbar {
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .hero {
+        min-height: 480px;
+    }
+
+    .hero-image img {
+        height: 350px;
+    }
+}
+
+/* PLANSHeT */
+
+@media (max-width: 850px) {
+    .navbar {
+        padding: 0 18px;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 25px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-actions {
+        gap: 5px;
+    }
+
+    .hero {
+        padding: 55px 30px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .promo-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .promo-image img {
+        height: 280px;
+    }
+}
+
+/* TELEFON */
+
+@media (max-width: 600px) {
+    .navbar {
+        height: 62px;
+        padding: 0 12px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .nav-actions {
+        gap: 2px;
+    }
+
+    .icon-btn {
+        width: 30px;
+        height: 32px;
+        font-size: 17px;
+    }
+
+    .nav-actions select {
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    .nav-links {
+        top: 62px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 55px 22px 35px;
+        flex-direction: column;
+        text-align: center;
+        border-radius: 0 0 25px 25px;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+        letter-spacing: -2px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+        margin: 20px auto 25px;
+    }
+
+    .hero-image {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .hero-image img {
+        height: 260px;
+    }
+
+    section:not(.hero) {
+        padding: 60px 17px;
+    }
+
+    .section-heading h2 {
+        font-size: 30px;
+    }
+
+    .category-list {
+        gap: 8px;
+    }
+
+    .category-card {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+
+    .product-toolbar {
+        flex-direction: column;
+    }
+
+    .product-toolbar select {
+        width: 100%;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .product-card {
+        padding: 12px;
+        border-radius: 15px;
+    }
+
+    .product-image {
+        height: 145px;
+    }
+
+    .product-card h3 {
+        font-size: 13px;
+    }
+
+    .product-price {
+        font-size: 14px;
+    }
+
+    .product-actions {
+        flex-direction: column;
+    }
+
+    .product-actions button {
+        padding: 9px 5px;
+        font-size: 11px;
+    }
+
+    .favorite-toggle {
+        width: 29px;
+        height: 29px;
+        font-size: 17px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .promo-section {
+        padding: 35px 20px !important;
+    }
+
+    .promo-section h2 {
+        font-size: 34px;
+    }
+
+    .promo-image img {
+        height: 210px;
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 30px 18px;
+        max-height: 90vh;
+    }
+
+    .footer {
+        padding: 35px 15px;
+    }
+
+    .footer p {
+        line-height: 1.7;
+    }
+}
+
+/* JUDA KICHIK TELEFONLAR */
+
+@media (max-width: 380px) {
+    .logo {
+        font-size: 15px;
+    }
+
+    .icon-btn {
+        width: 26px;
+        font-size: 15px;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-image {
+        height: 210px;
+    }
+}

@@ -1,0 +1,4398 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <!-- Viewport & encoding setup for crisp responsive rendering across devices -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APPLE STORE — Official-Style Demo Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* =========================================================================
+       DESIGN TOKENS & THEME VARIABLES (LIGHT / DARK MODE)
+       ========================================================================= */
+        :root {
+            --bg-page: #ffffff;
+            --bg-elevated: #f5f5f7;
+            --bg-card: #f5f5f7;
+            --bg-card-hover: #ebebef;
+            --bg-glass: rgba(255, 255, 255, 0.82);
+            --bg-input: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-muted: #86868b;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.16);
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --accent-soft: rgba(0, 113, 227, 0.1);
+            --silver: #d2d2d7;
+            --success: #1b873f;
+            --warning: #b25000;
+            --danger: #d70015;
+            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.14);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-pill: 999px;
+            --nav-height: 56px;
+            --transition-fast: 180ms cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-smooth: 320ms cubic-bezier(0.25, 0.1, 0.25, 1);
+            --max-width: 1280px;
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #000000;
+            --bg-elevated: #141416;
+            --bg-card: #161618;
+            --bg-card-hover: #202024;
+            --bg-glass: rgba(20, 20, 22, 0.82);
+            --bg-input: #1c1c1f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --text-muted: #86868b;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-strong: rgba(255, 255, 255, 0.2);
+            --accent: #2997ff;
+            --accent-hover: #40a9ff;
+            --accent-soft: rgba(41, 151, 255, 0.14);
+            --silver: #48484a;
+            --success: #30d158;
+            --warning: #ff9f0a;
+            --danger: #ff453a;
+            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.55);
+            --shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.75);
+        }
+
+        /* Reset & Base Typography */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img,
+        svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        /* Demo Notice Banner */
+        .demo-banner {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-banner strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* =========================================================================
+       NAVIGATION BAR
+       ========================================================================= */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            height: var(--nav-height);
+            background: var(--bg-glass);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-link-btn {
+            padding: 6px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 0.82rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast), background-color var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .nav-link-btn:hover,
+        .nav-link-btn.active {
+            color: var(--text-primary);
+            background: var(--bg-elevated);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 34px;
+            min-width: 34px;
+            padding: 0 8px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            transition: background-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-elevated);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.96);
+        }
+
+        .badge-count {
+            position: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: var(--radius-pill);
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 0.68rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .lang-select {
+            height: 32px;
+            padding: 0 10px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .hamburger-btn {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-pill);
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer {
+            display: none;
+            position: fixed;
+            top: calc(var(--nav-height) + 35px);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 890;
+            background: var(--bg-page);
+            padding: 24px 20px 48px;
+            overflow-y: auto;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .mobile-drawer.open {
+            display: block;
+        }
+
+        .mobile-nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .mobile-nav-btn {
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            font-size: 1.05rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-nav-btn:hover {
+            background: var(--bg-elevated);
+        }
+
+        /* =========================================================================
+       LAYOUT & SECTION CONTAINERS
+       ========================================================================= */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 64px 0;
+        }
+
+        .section-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.12;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            margin-top: 6px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-strong);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-strong);
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-elevated);
+        }
+
+        .btn-danger {
+            background: rgba(215, 0, 21, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(215, 0, 21, 0.18);
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 0.8rem;
+        }
+
+        /* =========================================================================
+       HERO SECTION
+       ========================================================================= */
+        .hero {
+            padding: 48px 0 36px;
+        }
+
+        .hero-card {
+            background: linear-gradient(145deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: clamp(28px, 5vw, 64px);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 36px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.2rem, 4.8vw, 3.6rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.06;
+            margin-bottom: 16px;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 520px;
+            margin-bottom: 26px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .hero-switcher {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hero-slide-dot {
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.76rem;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+        }
+
+        .hero-slide-dot.active {
+            background: var(--text-primary);
+            color: var(--bg-page);
+            border-color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+        }
+
+        /* =========================================================================
+       CATEGORY STRIP & FILTER / SORT TOOLBAR
+       ========================================================================= */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+        }
+
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cat-pill {
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+
+        .cat-pill:hover {
+            color: var(--text-primary);
+            border-color: var(--border-strong);
+        }
+
+        .cat-pill.active {
+            background: var(--text-primary);
+            color: var(--bg-page);
+            border-color: var(--text-primary);
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 42px;
+            padding: 0 38px 0 40px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            font-size: 0.9rem;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .search-clear:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        .sort-select {
+            height: 42px;
+            padding: 0 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            font-size: 0.86rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .catalog-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 0.86rem;
+            color: var(--text-secondary);
+        }
+
+        /* =========================================================================
+       PRODUCT GRID & CARDS
+       ========================================================================= */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), background-color var(--transition-fast), border-color var(--transition-fast);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-strong);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .tag-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: var(--radius-pill);
+            background: var(--bg-page);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .tag-new {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: transparent;
+        }
+
+        .card-actions-top {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mini-icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: var(--bg-page);
+            border: 1px solid var(--border-subtle);
+            transition: all var(--transition-fast);
+        }
+
+        .mini-icon-btn:hover,
+        .mini-icon-btn.active {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .mini-icon-btn.compare-active {
+            color: #ffffff;
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .product-visual-box {
+            height: 150px;
+            border-radius: var(--radius-md);
+            background: var(--bg-page);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .product-title {
+            font-size: 1.04rem;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            cursor: pointer;
+        }
+
+        .product-title:hover {
+            color: var(--accent);
+        }
+
+        .product-cat-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        .product-rating {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .product-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .option-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .swatches {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(128, 128, 128, 0.45);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .swatch.selected {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 3.5px var(--accent);
+        }
+
+        .storage-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .storage-chip {
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 500;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-page);
+            color: var(--text-secondary);
+        }
+
+        .storage-chip.selected {
+            background: var(--text-primary);
+            color: var(--bg-page);
+            border-color: var(--text-primary);
+        }
+
+        .price-block {
+            padding-top: 8px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .price-usd {
+            font-size: 1.08rem;
+            font-weight: 700;
+        }
+
+        .price-uzs {
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+        }
+
+        .card-footer-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* =========================================================================
+       FEATURED STRIPS, ABOUT, REVIEWS, FAQ, CONTACT, FOOTER
+       ========================================================================= */
+        .surface-band {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-trigger {
+            width: 100%;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 20px 18px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.form-control {
+            min-height: 96px;
+            resize: vertical;
+        }
+
+        .field-error {
+            color: var(--danger);
+            font-size: 0.76rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-error.visible {
+            display: block;
+        }
+
+        .status-banner {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .status-banner.success {
+            display: block;
+            background: rgba(27, 135, 63, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(27, 135, 63, 0.25);
+        }
+
+        .status-banner.error {
+            display: block;
+            background: rgba(215, 0, 21, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(215, 0, 21, 0.25);
+        }
+
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+            padding: 48px 0 32px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 28px;
+            margin-bottom: 32px;
+        }
+
+        .footer-heading {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .footer-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .footer-link-btn {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+        .footer-link-btn:hover {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.76rem;
+        }
+
+        /* =========================================================================
+       MODALS & DRAWERS (DETAILS, CART, FAVORITES, COMPARE, AUTH, ORDERS)
+       ========================================================================= */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            background: rgba(0, 0, 0, 0.58);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-dialog {
+            width: 100%;
+            max-width: 820px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--bg-page);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            animation: modalFadeIn 220ms ease-out;
+        }
+
+        .modal-dialog.narrow {
+            max-width: 480px;
+        }
+
+        .modal-dialog.wide {
+            max-width: 1060px;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.985);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .modal-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 24px;
+        }
+
+        .detail-gallery-main {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            min-height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .detail-thumbs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .detail-thumb {
+            background: var(--bg-elevated);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 8px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-thumb.active {
+            border-color: var(--accent);
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 0.84rem;
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            text-align: left;
+        }
+
+        .specs-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            width: 38%;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            gap: 14px;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .qty-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            padding: 3px 8px;
+        }
+
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: var(--bg-page);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1300;
+            background: var(--text-primary);
+            color: var(--bg-page);
+            padding: 12px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 0.86rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: all var(--transition-fast);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================================================
+       RESPONSIVE BREAKPOINTS (DESKTOP, LAPTOP, TABLET, MOBILE)
+       ========================================================================= */
+        @media (max-width: 1120px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger-btn {
+                display: inline-flex;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .hero-card,
+            .detail-layout,
+            .two-col,
+            .three-col,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-dialog {
+                padding: 20px 16px;
+                border-radius: var(--radius-lg);
+            }
+
+            .cart-item {
+                grid-template-columns: 56px 1fr;
+            }
+
+            .cart-item-right {
+                grid-column: 1 / -1;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Demo & Illustrative Data Notice -->
+    <div class="demo-banner" role="note" id="demoBanner">
+        <strong>DEMO CATALOG:</strong> All 40 Apple models, specifications, USD/UZS conversions, and checkout flows use
+        illustrative demo data for UI preview purposes.
+    </div>
+
+    <!-- Primary Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <button type="button" class="nav-brand" id="brandHomeBtn" aria-label="Apple Store Home">
+                <svg width="18" height="22" viewBox="0 0 170 170" fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.8-11.77-14.3-5.03-7.82-9.16-16.89-12.38-27.22-3.22-10.33-4.83-20.06-4.83-29.19 0-11.45 2.86-20.8 8.58-28.05 5.72-7.25 12.78-11.01 21.18-11.29 4.58 0 9.89 1.38 15.93 4.14 6.04 2.76 9.94 4.17 11.7 4.23 1.32 0 5.63-1.64 12.93-4.92 7.3-3.28 13.46-4.67 18.48-4.17 13.66 1.1 23.93 6.48 30.81 16.14-12.22 7.41-18.23 17.77-18.03 31.08.2 10.38 4.02 19.02 11.46 25.92 5.38 5.04 11.73 8.15 19.05 9.33-1.53 4.68-3.26 9.15-5.19 13.41zM119.22 31.9c0 8.12-2.96 15.69-8.89 22.71-7.14 8.35-15.79 13.17-25.17 12.42-.12-.98-.18-2.01-.18-3.09 0-7.79 3.39-16.13 9.44-22.97 2.98-3.38 6.77-6.18 11.37-8.4 4.6-2.22 8.95-3.45 13.05-3.69.26 2.13.4 4.17.4 6.62z" />
+                </svg>
+                <span data-i18n="brandName">APPLE STORE</span>
+            </button>
+
+            <nav aria-label="Primary Navigation">
+                <ul class="nav-links" id="desktopNavLinks">
+                    <li><button type="button" class="nav-link-btn active" data-nav-cat="all"
+                            data-i18n="navHome">Home</button></li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="iPhone"
+                            data-i18n="navIPhone">iPhone</button></li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="Mac" data-i18n="navMac">Mac</button>
+                    </li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="iPad" data-i18n="navIPad">iPad</button>
+                    </li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="Watch"
+                            data-i18n="navWatch">Watch</button></li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="AirPods"
+                            data-i18n="navAirPods">AirPods</button></li>
+                    <li><button type="button" class="nav-link-btn" data-nav-cat="Accessories"
+                            data-i18n="navAccessories">Accessories</button></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <select class="lang-select" id="langSelect" aria-label="Select Language">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="uz">🇺🇿 O‘zbek</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                </select>
+
+                <button type="button" class="icon-btn" id="themeToggleBtn" aria-label="Toggle Dark/Light Mode"
+                    title="Theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+
+                <button type="button" class="icon-btn" id="navSearchBtn" aria-label="Search Products" title="Search">
+                    🔍
+                </button>
+
+                <button type="button" class="icon-btn" id="navCompareBtn" aria-label="Compare Products" title="Compare">
+                    ⚖️ <span class="badge-count" id="compareCountBadge">0</span>
+                </button>
+
+                <button type="button" class="icon-btn" id="navFavoritesBtn" aria-label="Favorites" title="Favorites">
+                    ❤️ <span class="badge-count" id="favoritesCountBadge">0</span>
+                </button>
+
+                <button type="button" class="icon-btn" id="navCartBtn" aria-label="Shopping Cart" title="Cart">
+                    🛒 <span class="badge-count" id="cartCountBadge">0</span>
+                </button>
+
+                <button type="button" class="icon-btn" id="navAuthBtn" aria-label="Account" title="Login / Register">
+                    👤 <span id="authNavLabel" data-i18n="navAccount">Account</span>
+                </button>
+
+                <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open Menu"
+                    aria-expanded="false">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <ul class="mobile-nav-list">
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="all"><span
+                        data-i18n="navHome">Home</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="iPhone"><span
+                        data-i18n="navIPhone">iPhone</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="Mac"><span
+                        data-i18n="navMac">Mac</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="iPad"><span
+                        data-i18n="navIPad">iPad</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="Watch"><span
+                        data-i18n="navWatch">Watch</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="AirPods"><span
+                        data-i18n="navAirPods">AirPods</span><span>→</span></button></li>
+            <li><button type="button" class="mobile-nav-btn" data-nav-cat="Accessories"><span
+                        data-i18n="navAccessories">Accessories</span><span>→</span></button></li>
+        </ul>
+        <div style="display:grid; gap:10px;">
+            <button type="button" class="btn btn-secondary" id="mobileOrdersBtn" data-i18n="ordersTitle">Order
+                History</button>
+            <button type="button" class="btn btn-primary" id="mobileAuthBtn" data-i18n="loginRegisterBtn">Login /
+                Register</button>
+        </div>
+    </div>
+
+    <main id="mainContent">
+        <!-- Hero Showcase -->
+        <section class="hero" id="heroSection">
+            <div class="container">
+                <div class="hero-card" id="heroCard">
+                    <div>
+                        <span class="hero-eyebrow" id="heroEyebrow">NEW GENERATION • DEMO</span>
+                        <h1 class="hero-title" id="heroTitle">iPhone 17 Pro Max</h1>
+                        <p class="hero-desc" id="heroDesc">Crafted in brushed titanium with pro-grade camera optics,
+                            all-day battery life, and next-gen silicon performance.</p>
+                        <div class="hero-cta-group">
+                            <button type="button" class="btn btn-primary" id="heroShopBtn" data-i18n="heroShopNow">Shop
+                                Now</button>
+                            <button type="button" class="btn btn-outline" id="heroDetailsBtn"
+                                data-i18n="viewDetails">View Details</button>
+                        </div>
+                        <div class="hero-switcher" id="heroSlideDots" role="tablist" aria-label="Featured Hero Slides">
+                        </div>
+                    </div>
+                    <div class="hero-visual" id="heroVisual"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Interactive Catalog (Search, Category Filter, Sort, 40 Products) -->
+        <section id="catalogSection">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title" id="catalogHeading" data-i18n="catalogTitle">Apple Lineup</h2>
+                        <p class="section-subtitle" id="catalogSubtitle" data-i18n="catalogSubtitle">Explore 40 demo
+                            Apple devices and accessories across six categories.</p>
+                    </div>
+                    <div class="category-pills" id="categoryPills" role="tablist" aria-label="Product Categories"></div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="search-box">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="searchInput" class="search-input"
+                            placeholder="Search 40 products by name, chip, or feature..."
+                            aria-label="Search products" />
+                        <button type="button" class="search-clear" id="searchClearBtn"
+                            aria-label="Clear search">✕</button>
+                    </div>
+
+                    <select id="sortSelect" class="sort-select" aria-label="Sort products">
+                        <option value="featured" data-i18n="sortFeatured">Featured</option>
+                        <option value="newest" data-i18n="sortNewest">Newest Products</option>
+                        <option value="popular" data-i18n="sortPopular">Most Popular</option>
+                        <option value="price-asc" data-i18n="sortPriceLow">Price: Low to High</option>
+                        <option value="price-desc" data-i18n="sortPriceHigh">Price: High to Low</option>
+                    </select>
+
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-secondary btn-sm" id="openCompareModalBtn">
+                            ⚖️ <span data-i18n="compareBtn">Compare</span> (<span id="compareToolbarCount">0</span>)
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="openOrdersModalBtn">
+                            📦 <span data-i18n="ordersBtn">Orders</span> (<span id="ordersToolbarCount">0</span>)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="catalog-meta">
+                    <span id="resultsCountText">Showing 40 products</span>
+                    <button type="button" class="footer-link-btn" id="resetFiltersBtn" data-i18n="resetFilters">Reset
+                        all filters</button>
+                </div>
+
+                <div class="products-grid" id="productsGrid"></div>
+            </div>
+        </section>
+
+        <!-- New Products & Best Sellers Highlights -->
+        <section class="surface-band" id="highlightsSection">
+            <div class="container">
+                <div class="two-col">
+                    <div class="info-card">
+                        <h3 style="font-size:1.25rem; font-weight:600; margin-bottom:8px;" data-i18n="newArrivalsTitle">
+                            New Arrivals</h3>
+                        <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:16px;"
+                            data-i18n="newArrivalsDesc">Freshly added flagship & silicon releases in our demo catalog.
+                        </p>
+                        <div id="newProductsList" style="display:grid; gap:10px;"></div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 style="font-size:1.25rem; font-weight:600; margin-bottom:8px;" data-i18n="bestSellersTitle">
+                            Best Sellers</h3>
+                        <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:16px;"
+                            data-i18n="bestSellersDesc">Top-rated customer favorites across iPhone, Mac, Watch &
+                            AirPods.</p>
+                        <div id="bestSellersList" style="display:grid; gap:10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Apple & Customer Reviews -->
+        <section id="aboutReviewsSection">
+            <div class="container">
+                <div class="two-col" style="margin-bottom:40px;">
+                    <div class="info-card">
+                        <h2 class="section-title" style="font-size:1.65rem; margin-bottom:10px;" data-i18n="aboutTitle">
+                            About Apple Ecosystem</h2>
+                        <p style="color:var(--text-secondary); font-size:0.92rem;" data-i18n="aboutDesc">
+                            Designed around seamless hardware, custom silicon, and unified software experiences across
+                            iPhone, Mac, iPad, Apple Watch, AirPods, and precision accessories.
+                        </p>
+                    </div>
+                    <div class="info-card">
+                        <h2 class="section-title" style="font-size:1.65rem; margin-bottom:10px;"
+                            data-i18n="securityNoteTitle">Privacy & Security Architecture</h2>
+                        <p style="color:var(--text-secondary); font-size:0.92rem;" data-i18n="securityNoteDesc">
+                            Real production authentication requires a backend service with salted password hashing and
+                            HTTPS. Real card payments require a PCI-compliant payment backend and provider integration.
+                            This demo never stores passwords in localStorage.
+                        </p>
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="font-size:1.65rem; margin-bottom:20px;" data-i18n="reviewsTitle">
+                    Customer Reviews</h2>
+                <div class="three-col" id="reviewsGrid"></div>
+            </div>
+        </section>
+
+        <!-- FAQ & Contact Us -->
+        <section class="surface-band" id="faqContactSection">
+            <div class="container">
+                <div class="two-col">
+                    <div>
+                        <h2 class="section-title" style="font-size:1.65rem; margin-bottom:16px;" data-i18n="faqTitle">
+                            Frequently Asked Questions</h2>
+                        <div id="faqList"></div>
+                    </div>
+
+                    <div class="info-card" id="contactUsBox">
+                        <h2 class="section-title" style="font-size:1.65rem; margin-bottom:6px;"
+                            data-i18n="contactTitle">Contact Us</h2>
+                        <p style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:16px;"
+                            data-i18n="contactSubtitle">Send a message to our demo support desk.</p>
+
+                        <form id="contactForm" novalidate>
+                            <div class="form-group">
+                                <label class="form-label" for="contactName" data-i18n="labelName">Name</label>
+                                <input type="text" id="contactName" class="form-control" required />
+                                <div class="field-error" id="contactNameErr"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="contactEmail" data-i18n="labelEmail">Email</label>
+                                <input type="email" id="contactEmail" class="form-control" required />
+                                <div class="field-error" id="contactEmailErr"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="contactPhone" data-i18n="labelPhone">Phone</label>
+                                <input type="tel" id="contactPhone" class="form-control" required />
+                                <div class="field-error" id="contactPhoneErr"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="contactMessage" data-i18n="labelMessage">Message</label>
+                                <textarea id="contactMessage" class="form-control" required></textarea>
+                                <div class="field-error" id="contactMessageErr"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" data-i18n="sendMessageBtn">Send</button>
+                            <div class="status-banner" id="contactStatus"></div>
+                        </form>
+
+                        <div
+                            style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-subtle); font-size:0.82rem; color:var(--text-secondary);">
+                            <div>📍 <span data-i18n="addressValue">Amir Temur Avenue 108, Tashkent (Demo)</span></div>
+                            <div>✉️ support@applestore-demo.example • 📞 +998 (71) 200-00-00</div>
+                            <div style="margin-top:6px;">
+                                <a href="#catalogSection" style="color:var(--accent); margin-right:12px;">YouTube</a>
+                                <a href="#catalogSection" style="color:var(--accent); margin-right:12px;">Instagram</a>
+                                <a href="#catalogSection" style="color:var(--accent);">Telegram</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="nav-brand" style="margin-bottom:10px;">
+                        <span data-i18n="brandName">APPLE STORE</span>
+                    </div>
+                    <p style="font-size:0.82rem;" data-i18n="footerAbout">Minimalist demo storefront showcasing 40 Apple
+                        devices and accessories with trilingual UI and local persistence.</p>
+                </div>
+
+                <div>
+                    <div class="footer-heading" data-i18n="footerCategories">Categories</div>
+                    <ul class="footer-list">
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="iPhone"
+                                data-i18n="navIPhone">iPhone</button></li>
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="Mac"
+                                data-i18n="navMac">Mac</button></li>
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="iPad"
+                                data-i18n="navIPad">iPad</button></li>
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="Watch"
+                                data-i18n="navWatch">Watch</button></li>
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="AirPods"
+                                data-i18n="navAirPods">AirPods</button></li>
+                        <li><button type="button" class="footer-link-btn" data-nav-cat="Accessories"
+                                data-i18n="navAccessories">Accessories</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="footer-heading" data-i18n="footerAccount">Account & Shopping</div>
+                    <ul class="footer-list">
+                        <li><button type="button" class="footer-link-btn" id="footerCartBtn"
+                                data-i18n="cartTitle">Shopping Cart</button></li>
+                        <li><button type="button" class="footer-link-btn" id="footerFavBtn"
+                                data-i18n="favoritesTitle">Favorites</button></li>
+                        <li><button type="button" class="footer-link-btn" id="footerCompareBtn"
+                                data-i18n="compareTitle">Compare Products</button></li>
+                        <li><button type="button" class="footer-link-btn" id="footerOrdersBtn"
+                                data-i18n="ordersTitle">Order History</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="footer-heading" data-i18n="footerInfo">Information</div>
+                    <ul class="footer-list">
+                        <li><a href="#aboutReviewsSection" class="footer-link-btn" data-i18n="aboutTitle">About Apple
+                                Ecosystem</a></li>
+                        <li><a href="#faqContactSection" class="footer-link-btn" data-i18n="faqTitle">FAQ</a></li>
+                        <li><a href="#contactUsBox" class="footer-link-btn" data-i18n="contactTitle">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span data-i18n="footerCopyright">© 2026 APPLE STORE Demo. Illustrative catalog & UI simulation.</span>
+                <span>1 USD = 12,850 UZS (Demo Rate)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =======================================================================
+       MODALS: PRODUCT DETAILS, CART & CHECKOUT, FAVORITES, COMPARE, AUTH, ORDERS
+       ======================================================================= -->
+
+    <!-- Product Details Modal -->
+    <div class="modal-backdrop" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="detailTitle" style="font-size:1.3rem; font-weight:600;"></h3>
+                <button type="button" class="modal-close" data-close-modal="detailModal" aria-label="Close">✕</button>
+            </div>
+            <div id="detailBody"></div>
+        </div>
+    </div>
+
+    <!-- Cart & Checkout Modal -->
+    <div class="modal-backdrop" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="cartModalTitle" style="font-size:1.3rem; font-weight:600;" data-i18n="cartTitle">Shopping Cart
+                </h3>
+                <button type="button" class="modal-close" data-close-modal="cartModal" aria-label="Close">✕</button>
+            </div>
+            <div id="cartBody"></div>
+        </div>
+    </div>
+
+    <!-- Favorites Modal -->
+    <div class="modal-backdrop" id="favoritesModal" role="dialog" aria-modal="true"
+        aria-labelledby="favoritesModalTitle">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="favoritesModalTitle" style="font-size:1.3rem; font-weight:600;" data-i18n="favoritesTitle">
+                    Favorites</h3>
+                <button type="button" class="modal-close" data-close-modal="favoritesModal"
+                    aria-label="Close">✕</button>
+            </div>
+            <div id="favoritesBody"></div>
+        </div>
+    </div>
+
+    <!-- Product Comparison Modal -->
+    <div class="modal-backdrop" id="compareModal" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle">
+        <div class="modal-dialog wide">
+            <div class="modal-header">
+                <h3 id="compareModalTitle" style="font-size:1.3rem; font-weight:600;" data-i18n="compareTitle">Product
+                    Comparison (2–3 Items)</h3>
+                <button type="button" class="modal-close" data-close-modal="compareModal" aria-label="Close">✕</button>
+            </div>
+            <div id="compareBody"></div>
+        </div>
+    </div>
+
+    <!-- Login / Register Modal -->
+    <div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="modal-dialog narrow">
+            <div class="modal-header">
+                <h3 id="authModalTitle" style="font-size:1.25rem; font-weight:600;" data-i18n="accountModalTitle">
+                    Account</h3>
+                <button type="button" class="modal-close" data-close-modal="authModal" aria-label="Close">✕</button>
+            </div>
+            <div id="authBody"></div>
+        </div>
+    </div>
+
+    <!-- Order History Modal -->
+    <div class="modal-backdrop" id="ordersModal" role="dialog" aria-modal="true" aria-labelledby="ordersModalTitle">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="ordersModalTitle" style="font-size:1.3rem; font-weight:600;" data-i18n="ordersTitle">Order
+                    History</h3>
+                <button type="button" class="modal-close" data-close-modal="ordersModal" aria-label="Close">✕</button>
+            </div>
+            <div id="ordersBody"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        /* =========================================================================
+           1. STATE, STORAGE KEYS & TRANSLATIONS (EN / UZ / RU)
+           ========================================================================= */
+        const USD_TO_UZS = 12850; // Illustrative demo conversion rate
+
+        const STORAGE_KEYS = {
+            LANG: 'apple_store_demo_lang_v1',
+            THEME: 'apple_store_demo_theme_v1',
+            CART: 'apple_store_demo_cart_v1',
+            FAVORITES: 'apple_store_demo_favorites_v1',
+            COMPARE: 'apple_store_demo_compare_v1',
+            ORDERS: 'apple_store_demo_orders_v1',
+            SESSION: 'apple_store_demo_session_v1' // Non-sensitive profile display info only; never passwords
+        };
+
+        const TRANSLATIONS = {
+            en: {
+                brandName: 'APPLE STORE',
+                navHome: 'Home',
+                navIPhone: 'iPhone',
+                navMac: 'Mac',
+                navIPad: 'iPad',
+                navWatch: 'Watch',
+                navAirPods: 'AirPods',
+                navAccessories: 'Accessories',
+                navAccount: 'Account',
+                loginRegisterBtn: 'Login / Register',
+                accountModalTitle: 'Account & Demo Auth',
+                heroShopNow: 'Shop Now',
+                viewDetails: 'Details',
+                addToCart: 'Add to Cart',
+                buyNow: 'Order Now',
+                compareBtn: 'Compare',
+                ordersBtn: 'Orders',
+                resetFilters: 'Reset all filters',
+                catalogTitle: 'Apple Lineup',
+                catalogSubtitle: 'Explore 40 demo Apple devices and accessories across six categories.',
+                sortFeatured: 'Featured',
+                sortNewest: 'Newest Products',
+                sortPopular: 'Most Popular',
+                sortPriceLow: 'Price: Low to High',
+                sortPriceHigh: 'Price: High to Low',
+                newArrivalsTitle: 'New Arrivals',
+                newArrivalsDesc: 'Freshly added flagship & custom silicon releases in our demo catalog.',
+                bestSellersTitle: 'Best Sellers',
+                bestSellersDesc: 'Top-rated customer favorites across every Apple lineup.',
+                aboutTitle: 'About Apple Ecosystem',
+                aboutDesc: 'Designed around seamless hardware, custom silicon, and unified software across iPhone, Mac, iPad, Apple Watch, AirPods, and accessories.',
+                securityNoteTitle: 'Privacy & Security Architecture',
+                securityNoteDesc: 'Production authentication requires a secure backend with hashed passwords over HTTPS. Real card payments require a PCI-compliant payment backend and provider integration. Passwords are never stored in localStorage.',
+                reviewsTitle: 'Customer Reviews',
+                faqTitle: 'Frequently Asked Questions',
+                contactTitle: 'Contact Us',
+                contactSubtitle: 'Send a message to our demo support desk.',
+                labelName: 'Full Name',
+                labelFirstName: 'First Name',
+                labelLastName: 'Last Name',
+                labelEmail: 'Email',
+                labelPhone: 'Phone Number',
+                labelPassword: 'Password',
+                labelConfirmPassword: 'Confirm Password',
+                labelAddress: 'Delivery Address',
+                labelPaymentMethod: 'Payment Method',
+                labelMessage: 'Message',
+                sendMessageBtn: 'Send',
+                addressValue: 'Amir Temur Avenue 108, Tashkent (Demo)',
+                footerAbout: 'Minimalist demo storefront showcasing 40 Apple devices and accessories with trilingual UI and local persistence.',
+                footerCategories: 'Categories',
+                footerAccount: 'Account & Shopping',
+                footerInfo: 'Information',
+                footerCopyright: '© 2026 APPLE STORE Demo. Illustrative catalog & UI simulation.',
+                cartTitle: 'Shopping Cart',
+                cartEmpty: 'Your shopping cart is currently empty.',
+                cartSubtotal: 'Subtotal',
+                cartDelivery: 'Delivery',
+                cartTotal: 'Total',
+                checkoutBtn: 'Proceed to Checkout',
+                confirmOrderBtn: 'Confirm Order',
+                favoritesTitle: 'Favorites',
+                favoritesEmpty: 'No favorite products yet. Click the heart icon on any item.',
+                compareTitle: 'Product Comparison',
+                compareNeedMore: 'Select 2 or 3 products to compare side by side.',
+                ordersTitle: 'Order History',
+                ordersEmpty: 'No orders placed yet.',
+                specDisplay: 'Display',
+                specChip: 'Processor',
+                specCamera: 'Camera',
+                specBattery: 'Battery',
+                specWeight: 'Weight',
+                specExtra: 'Highlights',
+                addedToCart: 'Added to cart',
+                addedToFav: 'Added to favorites',
+                removedFromFav: 'Removed from favorites',
+                addedToCompare: 'Added to comparison',
+                removedFromCompare: 'Removed from comparison',
+                maxCompareReached: 'You can compare up to 3 products at once.',
+                allCategories: 'All',
+                newBadge: 'NEW'
+            },
+            uz: {
+                brandName: 'APPLE STORE',
+                navHome: 'Bosh sahifa',
+                navIPhone: 'iPhone',
+                navMac: 'Mac',
+                navIPad: 'iPad',
+                navWatch: 'Watch',
+                navAirPods: 'AirPods',
+                navAccessories: 'Aksessuarlar',
+                navAccount: 'Kabinet',
+                loginRegisterBtn: 'Kirish / Ro‘yxatdan o‘tish',
+                accountModalTitle: 'Profil va Demo Autentifikatsiya',
+                heroShopNow: 'Xarid qilish',
+                viewDetails: 'Batafsil',
+                addToCart: 'Savatchaga',
+                buyNow: 'Buyurtma berish',
+                compareBtn: 'Taqqoslash',
+                ordersBtn: 'Buyurtmalar',
+                resetFilters: 'Filtrlarni tozalash',
+                catalogTitle: 'Apple Mahsulotlari',
+                catalogSubtitle: '6 ta kategoriyada 40 ta demo Apple qurilma va aksessuari.',
+                sortFeatured: 'Tavsiya etilgan',
+                sortNewest: 'Yangi mahsulotlar',
+                sortPopular: 'Eng mashhur',
+                sortPriceLow: 'Narx: Arzondan qimmatga',
+                sortPriceHigh: 'Narx: Qimmatdan arzonga',
+                newArrivalsTitle: 'Yangi mahsulotlar',
+                newArrivalsDesc: 'Demo katalogimizga qo‘shilgan eng yangi flagman va chip modellari.',
+                bestSellersTitle: 'Eng ko‘p sotilganlar',
+                bestSellersDesc: 'Foydalanuvchilar eng yuqori baholagan mashhur modellar.',
+                aboutTitle: 'Apple Ekotizimi Haqida',
+                aboutDesc: 'iPhone, Mac, iPad, Apple Watch, AirPods va aksessuarlar o‘rtasidagi uyg‘un apparat va dasturiy yechimlar.',
+                securityNoteTitle: 'Xavfsizlik va Arxitektura',
+                securityNoteDesc: 'Haqiqiy autentifikatsiya uchun xavfsiz backend va parol xeshlash zarur. Haqiqiy karta to‘lovlari uchun to‘lov provayderi va backend integratsiyasi kerak. Parollar localStorage’da saqlanmaydi.',
+                reviewsTitle: 'Mijozlar Fikrlari',
+                faqTitle: 'Ko‘p Beriladigan Savollar',
+                contactTitle: 'Biz Bilan Bog‘lanish',
+                contactSubtitle: 'Demo qo‘llab-quvvatlash markaziga xabar yuboring.',
+                labelName: 'Ism va familiya',
+                labelFirstName: 'Ism',
+                labelLastName: 'Familiya',
+                labelEmail: 'Email',
+                labelPhone: 'Telefon raqam',
+                labelPassword: 'Parol',
+                labelConfirmPassword: 'Parolni tasdiqlash',
+                labelAddress: 'Yetkazib berish manzili',
+                labelPaymentMethod: 'To‘lov turi',
+                labelMessage: 'Xabar',
+                sendMessageBtn: 'Yuborish',
+                addressValue: 'Amir Temur shoh ko‘chasi 108, Toshkent (Demo)',
+                footerAbout: '40 ta Apple mahsuloti, 3 til va localStorage saqlashga ega minimalist demo do‘kon.',
+                footerCategories: 'Kategoriyalar',
+                footerAccount: 'Kabinet va Xarid',
+                footerInfo: 'Ma’lumotlar',
+                footerCopyright: '© 2026 APPLE STORE Demo. Namoyish uchun o‘quv/demo ma’lumotlar.',
+                cartTitle: 'Savatcha',
+                cartEmpty: 'Savatchangiz hozircha bo‘sh.',
+                cartSubtotal: 'Mahsulotlar narxi',
+                cartDelivery: 'Yetkazib berish',
+                cartTotal: 'Jami',
+                checkoutBtn: 'Rasmiylashtirish',
+                confirmOrderBtn: 'Buyurtmani tasdiqlash',
+                favoritesTitle: 'Sevimlilar',
+                favoritesEmpty: 'Sevimli mahsulotlar yo‘q. Mahsulotdagi yurakcha tugmasini bosing.',
+                compareTitle: 'Mahsulotlarni Taqqoslash',
+                compareNeedMore: 'Taqqoslash uchun 2 yoki 3 ta mahsulot tanlang.',
+                ordersTitle: 'Buyurtmalar Tarixi',
+                ordersEmpty: 'Hali buyurtmalar rasmiylashtirilmagan.',
+                specDisplay: 'Ekran',
+                specChip: 'Protsessor',
+                specCamera: 'Kamera',
+                specBattery: 'Batareya',
+                specWeight: 'Og‘irlik',
+                specExtra: 'Xususiyatlar',
+                addedToCart: 'Savatchaga qo‘shildi',
+                addedToFav: 'Sevimlilarga qo‘shildi',
+                removedFromFav: 'Sevimlilardan o‘chirildi',
+                addedToCompare: 'Taqqoslashga qo‘shildi',
+                removedFromCompare: 'Taqqoslashdan o‘chirildi',
+                maxCompareReached: 'Bir vaqtda eng ko‘pi bilan 3 ta mahsulotni taqqoslash mumkin.',
+                allCategories: 'Barchasi',
+                newBadge: 'YANGI'
+            },
+            ru: {
+                brandName: 'APPLE STORE',
+                navHome: 'Главная',
+                navIPhone: 'iPhone',
+                navMac: 'Mac',
+                navIPad: 'iPad',
+                navWatch: 'Watch',
+                navAirPods: 'AirPods',
+                navAccessories: 'Аксессуары',
+                navAccount: 'Аккаунт',
+                loginRegisterBtn: 'Вход / Регистрация',
+                accountModalTitle: 'Аккаунт и Демо-вход',
+                heroShopNow: 'Купить',
+                viewDetails: 'Подробнее',
+                addToCart: 'В корзину',
+                buyNow: 'Оформить',
+                compareBtn: 'Сравнение',
+                ordersBtn: 'Заказы',
+                resetFilters: 'Сбросить фильтры',
+                catalogTitle: 'Линейка Apple',
+                catalogSubtitle: '40 демо-устройств и аксессуаров Apple в шести категориях.',
+                sortFeatured: 'Рекомендуемые',
+                sortNewest: 'Новинки',
+                sortPopular: 'Популярные',
+                sortPriceLow: 'Цена: по возрастанию',
+                sortPriceHigh: 'Цена: по убыванию',
+                newArrivalsTitle: 'Новинки',
+                newArrivalsDesc: 'Свежие флагманы и чипы в нашем демонстрационном каталоге.',
+                bestSellersTitle: 'Хиты продаж',
+                bestSellersDesc: 'Наиболее популярные модели среди покупателей.',
+                aboutTitle: 'Об экосистеме Apple',
+                aboutDesc: 'Единый опыт взаимодействия устройств, фирменных чипов и сервисов для iPhone, Mac, iPad, Apple Watch, AirPods и аксессуаров.',
+                securityNoteTitle: 'Безопасность и архитектура',
+                securityNoteDesc: 'Для реальной аутентификации нужен защищённый backend с хэшированием паролей по HTTPS, а для оплаты картами — платёжный провайдер. Пароли не хранятся в localStorage.',
+                reviewsTitle: 'Отзывы покупателей',
+                faqTitle: 'Частые вопросы',
+                contactTitle: 'Связаться с нами',
+                contactSubtitle: 'Отправьте сообщение в демо-поддержку.',
+                labelName: 'Имя и фамилия',
+                labelFirstName: 'Имя',
+                labelLastName: 'Фамилия',
+                labelEmail: 'Email',
+                labelPhone: 'Телефон',
+                labelPassword: 'Пароль',
+                labelConfirmPassword: 'Подтвердите пароль',
+                labelAddress: 'Адрес доставки',
+                labelPaymentMethod: 'Способ оплаты',
+                labelMessage: 'Сообщение',
+                sendMessageBtn: 'Отправить',
+                addressValue: 'проспект Амира Темура 108, Ташкент (Демо)',
+                footerAbout: 'Минималистичный демо-магазин с 40 товарами Apple, 3 языками и сохранением в localStorage.',
+                footerCategories: 'Категории',
+                footerAccount: 'Аккаунт и покупки',
+                footerInfo: 'Информация',
+                footerCopyright: '© 2026 APPLE STORE Demo. Демонстрационные данные каталога.',
+                cartTitle: 'Корзина',
+                cartEmpty: 'Ваша корзина пока пуста.',
+                cartSubtotal: 'Товары',
+                cartDelivery: 'Доставка',
+                cartTotal: 'Итого',
+                checkoutBtn: 'Перейти к оформлению',
+                confirmOrderBtn: 'Подтвердить заказ',
+                favoritesTitle: 'Избранное',
+                favoritesEmpty: 'В избранном пока пусто. Нажмите сердечко на карточке товара.',
+                compareTitle: 'Сравнение товаров',
+                compareNeedMore: 'Выберите 2 или 3 товара для сравнения.',
+                ordersTitle: 'История заказов',
+                ordersEmpty: 'Заказов пока нет.',
+                specDisplay: 'Дисплей',
+                specChip: 'Процессор',
+                specCamera: 'Камера',
+                specBattery: 'Батарея',
+                specWeight: 'Вес',
+                specExtra: 'Особенности',
+                addedToCart: 'Добавлено в корзину',
+                addedToFav: 'Добавлено в избранное',
+                removedFromFav: 'Удалено из избранного',
+                addedToCompare: 'Добавлено к сравнению',
+                removedFromCompare: 'Удалено из сравнения',
+                maxCompareReached: 'Можно сравнить не более 3 товаров одновременно.',
+                allCategories: 'Все',
+                newBadge: 'NEW'
+            }
+        };
+
+        /* =========================================================================
+           2. ORIGINAL SVG ARTWORK GENERATOR (UNIQUE PER CATEGORY & MODEL)
+           ========================================================================= */
+        function generateProductSVG(product, colorHex = '#8e8e93') {
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(colorHex) ? colorHex : '#8e8e93';
+            const label = product.name.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            const shortTag = product.category.toUpperCase();
+
+            if (product.category === 'iPhone') {
+                return `
+          <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+            <rect x="74" y="10" width="72" height="110" rx="14" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="2"/>
+            <rect x="78" y="14" width="64" height="102" rx="11" fill="#141418"/>
+            <circle cx="94" cy="30" r="7" fill="#2c2c34" stroke="${safeColor}" stroke-width="2"/>
+            <circle cx="94" cy="30" r="3" fill="#0a84ff"/>
+            <circle cx="94" cy="46" r="7" fill="#2c2c34" stroke="${safeColor}" stroke-width="2"/>
+            <circle cx="94" cy="46" r="3" fill="#0a84ff"/>
+            <rect x="104" y="20" width="22" height="6" rx="3" fill="#000000"/>
+            <text x="110" y="92" text-anchor="middle" fill="#f5f5f7" font-size="8.5" font-family="Inter, sans-serif" font-weight="600">${shortTag}</text>
+          </svg>`;
+            }
+
+            if (product.category === 'Mac') {
+                return `
+          <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+            <rect x="44" y="18" width="132" height="82" rx="7" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="2"/>
+            <rect x="50" y="24" width="120" height="68" rx="3" fill="#18181d"/>
+            <rect x="24" y="100" width="172" height="8" rx="4" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="1.5"/>
+            <text x="110" y="62" text-anchor="middle" fill="#f5f5f7" font-size="9" font-family="Inter, sans-serif" font-weight="600">MAC</text>
+          </svg>`;
+            }
+
+            if (product.category === 'iPad') {
+                return `
+          <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+            <rect x="52" y="14" width="116" height="102" rx="10" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="2"/>
+            <rect x="58" y="20" width="104" height="90" rx="6" fill="#16161c"/>
+            <text x="110" y="69" text-anchor="middle" fill="#f5f5f7" font-size="9" font-family="Inter, sans-serif" font-weight="600">iPad</text>
+          </svg>`;
+            }
+
+            if (product.category === 'Watch') {
+                return `
+          <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+            <rect x="92" y="6" width="36" height="26" rx="6" fill="${safeColor}" opacity="0.8"/>
+            <rect x="92" y="98" width="36" height="26" rx="6" fill="${safeColor}" opacity="0.8"/>
+            <rect x="82" y="30" width="56" height="70" rx="16" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="2"/>
+            <rect x="87" y="35" width="46" height="60" rx="12" fill="#111115"/>
+            <circle cx="110" cy="65" r="14" fill="none" stroke="#30d158" stroke-width="3"/>
+          </svg>`;
+            }
+
+            if (product.category === 'AirPods') {
+                return `
+          <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+            <rect x="74" y="22" width="72" height="86" rx="22" fill="${safeColor}" stroke="rgba(128,128,128,0.45)" stroke-width="2"/>
+            <line x1="74" y1="54" x2="146" y2="54" stroke="rgba(128,128,128,0.4)" stroke-width="1.5"/>
+            <circle cx="110" cy="66" r="3" fill="#30d158"/>
+          </svg>`;
+            }
+
+            // Accessories
+            return `
+        <svg viewBox="0 0 220 130" width="100%" height="100%" role="img" aria-label="${label}">
+          <circle cx="110" cy="65" r="36" fill="none" stroke="${safeColor}" stroke-width="8"/>
+          <circle cx="110" cy="65" r="14" fill="${safeColor}" opacity="0.35"/>
+          <text x="110" y="116" text-anchor="middle" fill="#86868b" font-size="8" font-family="Inter, sans-serif" font-weight="600">ACCESSORY</text>
+        </svg>`;
+        }
+
+        /* =========================================================================
+           3. 40 DISTINCT APPLE PRODUCTS (DEMO / ILLUSTRATIVE CATALOG DATA)
+           ========================================================================= */
+        const PRODUCTS = [
+            // --- IPHONE (8 models) ---
+            {
+                id: 'iphone-17-pro-max',
+                category: 'iPhone',
+                name: 'iPhone 17 Pro Max',
+                priceUsd: 1199,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Desert Titanium', hex: '#b89f85' },
+                    { name: 'Black Titanium', hex: '#2c2c2e' },
+                    { name: 'Silver Titanium', hex: '#d1d1d6' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Demo flagship with 6.9-inch Super Retina XDR display, titanium frame, and multi-lens pro camera system.',
+                    uz: 'Demo flagman: 6.9 dyuymli Super Retina XDR ekran, titan korpus va professional kamera tizimi.',
+                    ru: 'Демо-флагман с дисплеем 6.9" Super Retina XDR, титановой рамкой и продвинутой камерой.'
+                },
+                specs: {
+                    display: '6.9" OLED ProMotion (Demo)',
+                    chip: 'A19 Pro (Demo)',
+                    camera: '48MP Main + UltraWide + Telephoto (Demo)',
+                    battery: 'Up to 33h video playback (Demo)',
+                    weight: '227 g (Demo)',
+                    extra: 'USB-C, Action & Camera Control buttons'
+                }
+            },
+            {
+                id: 'iphone-17-pro',
+                category: 'iPhone',
+                name: 'iPhone 17 Pro',
+                priceUsd: 999,
+                rating: 4.8,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Natural Titanium', hex: '#9a968e' },
+                    { name: 'White Titanium', hex: '#f2f2f7' },
+                    { name: 'Black Titanium', hex: '#1f1f23' }
+                ],
+                storage: ['128GB', '256GB', '512GB'],
+                desc: {
+                    en: 'Compact pro titanium smartphone engineered for high-efficiency performance and crisp low-light photography.',
+                    uz: 'Ixcham titan pro smartfon: yuqori unumdorlik va tiniq tungi suratga olish imkoniyati.',
+                    ru: 'Компактный титановый смартфон с высокой производительностью и качественной съёмкой.'
+                },
+                specs: {
+                    display: '6.3" OLED ProMotion (Demo)',
+                    chip: 'A19 Pro (Demo)',
+                    camera: '48MP Pro Camera System (Demo)',
+                    battery: 'Up to 27h video playback (Demo)',
+                    weight: '199 g (Demo)',
+                    extra: 'Titanium enclosure, Wi-Fi 7 (Demo)'
+                }
+            },
+            {
+                id: 'iphone-17',
+                category: 'iPhone',
+                name: 'iPhone 17',
+                priceUsd: 799,
+                rating: 4.8,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Ultramarine', hex: '#3b6ef6' },
+                    { name: 'Teal', hex: '#49919b' },
+                    { name: 'Midnight', hex: '#1d1d1f' }
+                ],
+                storage: ['128GB', '256GB', '512GB'],
+                desc: {
+                    en: 'Everyday flagship with vibrant Super Retina XDR display, dual camera system, and all-day battery.',
+                    uz: 'Kundalik flagman: yorqin Super Retina XDR ekran, qo‘sh kamera va uzoq avtonomlik.',
+                    ru: 'Базовый флагман с ярким дисплеем Super Retina XDR, двойной камерой и отличной автономностью.'
+                },
+                specs: {
+                    display: '6.1" Super Retina XDR (Demo)',
+                    chip: 'A19 Chip (Demo)',
+                    camera: '48MP Dual Fusion (Demo)',
+                    battery: 'Up to 24h video playback (Demo)',
+                    weight: '172 g (Demo)',
+                    extra: 'Aluminum frame, Ceramic Shield'
+                }
+            },
+            {
+                id: 'iphone-air',
+                category: 'iPhone',
+                name: 'iPhone Air',
+                priceUsd: 899,
+                rating: 4.7,
+                isNew: true,
+                isPopular: false,
+                colors: [
+                    { name: 'Sky Silver', hex: '#c7d2de' },
+                    { name: 'Graphite', hex: '#3a3a3c' },
+                    { name: 'Starlight', hex: '#eae4d7' }
+                ],
+                storage: ['128GB', '256GB', '512GB'],
+                desc: {
+                    en: 'Ultra-thin lightweight demo profile combining sleek portability with modern display clarity.',
+                    uz: 'O‘ta yupqa va yengil demo model: qulaylik va zamonaviy ekran tiniqligi uyg‘unligi.',
+                    ru: 'Сверхтонкий лёгкий демо-смартфон с акцентом на портативность и аккуратный профиль.'
+                },
+                specs: {
+                    display: '6.5" Slim OLED (Demo)',
+                    chip: 'A19 Chip (Demo)',
+                    camera: '48MP Single Pro Lens (Demo)',
+                    battery: 'Up to 22h video playback (Demo)',
+                    weight: '148 g (Demo)',
+                    extra: 'Ultra-thin chassis (Demo)'
+                }
+            },
+            {
+                id: 'iphone-16-pro-max',
+                category: 'iPhone',
+                name: 'iPhone 16 Pro Max',
+                priceUsd: 1099,
+                rating: 4.8,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Desert Titanium', hex: '#bfa48a' },
+                    { name: 'Black Titanium', hex: '#262629' },
+                    { name: 'Natural Titanium', hex: '#9e9a91' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Large-screen titanium model built for cinema-grade video capture, console-class graphics, and endurance.',
+                    uz: 'Katta ekranli titan model: sifatli video yozuv, kuchli grafika va uzoq ishlash vaqti.',
+                    ru: 'Крупноформатный титановый смартфон для видеосъёмки, игр и длительной работы.'
+                },
+                specs: {
+                    display: '6.9" Super Retina XDR (Demo)',
+                    chip: 'A18 Pro (Demo)',
+                    camera: '48MP + 5x Telephoto (Demo)',
+                    battery: 'Up to 33h video playback (Demo)',
+                    weight: '225 g (Demo)',
+                    extra: 'Grade 5 Titanium'
+                }
+            },
+            {
+                id: 'iphone-16-pro',
+                category: 'iPhone',
+                name: 'iPhone 16 Pro',
+                priceUsd: 949,
+                rating: 4.7,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Natural Titanium', hex: '#9e9a91' },
+                    { name: 'White Titanium', hex: '#efeff4' },
+                    { name: 'Desert Titanium', hex: '#bfa48a' }
+                ],
+                storage: ['128GB', '256GB', '512GB'],
+                desc: {
+                    en: 'Balanced titanium pro device offering studio-quality audio mics, fast USB-C transfer, and sharp optics.',
+                    uz: 'Muvozanatli titan pro qurilma: sifatli mikrofonlar, tezkor USB-C va aniq optika.',
+                    ru: 'Сбалансированный титановый Pro-смартфон с качественными микрофонами и быстрым USB-C.'
+                },
+                specs: {
+                    display: '6.3" Super Retina XDR (Demo)',
+                    chip: 'A18 Pro (Demo)',
+                    camera: '48MP Pro System (Demo)',
+                    battery: 'Up to 27h video playback (Demo)',
+                    weight: '199 g (Demo)',
+                    extra: 'Studio-quality mics'
+                }
+            },
+            {
+                id: 'iphone-16',
+                category: 'iPhone',
+                name: 'iPhone 16',
+                priceUsd: 699,
+                rating: 4.7,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Pink', hex: '#f2a7c6' },
+                    { name: 'Teal', hex: '#4ca1a3' },
+                    { name: 'Black', hex: '#1d1d1f' }
+                ],
+                storage: ['128GB', '256GB'],
+                desc: {
+                    en: 'Versatile everyday iPhone with responsive performance, MagSafe support, and colorful finishes.',
+                    uz: 'Har kunlik foydalanish uchun qulay iPhone: tezkor ishlash, MagSafe va chiroyli ranglar.',
+                    ru: 'Универсальный iPhone с быстрой работой, поддержкой MagSafe и яркими цветами.'
+                },
+                specs: {
+                    display: '6.1" Super Retina XDR (Demo)',
+                    chip: 'A18 Chip (Demo)',
+                    camera: '48MP Dual Camera (Demo)',
+                    battery: 'Up to 22h video playback (Demo)',
+                    weight: '170 g (Demo)',
+                    extra: 'MagSafe & Qi2 wireless'
+                }
+            },
+            {
+                id: 'iphone-16e',
+                category: 'iPhone',
+                name: 'iPhone 16e',
+                priceUsd: 599,
+                rating: 4.6,
+                isNew: false,
+                isPopular: false,
+                colors: [
+                    { name: 'Matte Black', hex: '#1c1c1e' },
+                    { name: 'Crisp White', hex: '#f5f5f7' }
+                ],
+                storage: ['128GB', '256GB'],
+                desc: {
+                    en: 'Value-focused entry model delivering reliable daily speed, clean design, and solid battery life.',
+                    uz: 'Qulay narxdagi boshlang‘ich model: ishonchli kundalik tezlik va yaxshi batareya.',
+                    ru: 'Доступная модель с надёжным быстродействием, лаконичным дизайном и хорошей батареей.'
+                },
+                specs: {
+                    display: '6.1" OLED Display (Demo)',
+                    chip: 'A18 Series (Demo)',
+                    camera: '48MP Main Lens (Demo)',
+                    battery: 'Up to 26h video playback (Demo)',
+                    weight: '167 g (Demo)',
+                    extra: 'Face ID & USB-C'
+                }
+            },
+
+            // --- MAC (8 models) ---
+            {
+                id: 'macbook-pro-14',
+                category: 'Mac',
+                name: 'MacBook Pro 14',
+                priceUsd: 1599,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Space Black', hex: '#1e1e22' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['512GB', '1TB', '2TB'],
+                desc: {
+                    en: 'Portable pro workstation with Liquid Retina XDR display, active cooling, and rich port selection.',
+                    uz: 'Portativ professional noutbuk: Liquid Retina XDR ekran, faol sovutish va ko‘p portlar.',
+                    ru: 'Портативный ноутбук Pro с дисплеем Liquid Retina XDR, активным охлаждением и портами.'
+                },
+                specs: {
+                    display: '14.2" Liquid Retina XDR (Demo)',
+                    chip: 'M4 Pro (Demo)',
+                    camera: '12MP Center Stage (Demo)',
+                    battery: 'Up to 24h (Demo)',
+                    weight: '1.60 kg (Demo)',
+                    extra: '3x Thunderbolt, HDMI, SDXC, MagSafe 3'
+                }
+            },
+            {
+                id: 'macbook-pro-16',
+                category: 'Mac',
+                name: 'MacBook Pro 16',
+                priceUsd: 2499,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Space Black', hex: '#1e1e22' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['512GB', '1TB', '2TB'],
+                desc: {
+                    en: 'Expansive 16-inch studio laptop built for heavy compiling, 3D rendering, and multi-track production.',
+                    uz: 'Katta 16 dyuymli noutbuk: murakkab loyihalar, 3D grafika va studio ishlari uchun.',
+                    ru: 'Большой 16-дюймовый ноутбук для 3D-графики, сборки кода и работы со звуком.'
+                },
+                specs: {
+                    display: '16.2" Liquid Retina XDR (Demo)',
+                    chip: 'M4 Max (Demo)',
+                    camera: '12MP Center Stage (Demo)',
+                    battery: 'Up to 24h (Demo)',
+                    weight: '2.14 kg (Demo)',
+                    extra: 'Six-speaker spatial audio'
+                }
+            },
+            {
+                id: 'macbook-air-13',
+                category: 'Mac',
+                name: 'MacBook Air 13',
+                priceUsd: 999,
+                rating: 4.9,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Midnight', hex: '#1d2432' },
+                    { name: 'Starlight', hex: '#e8e0cf' },
+                    { name: 'Space Gray', hex: '#6e6e73' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Silent fanless 13-inch laptop ideal for students, writers, developers, and mobile professionals.',
+                    uz: 'Shovqinsiz 13 dyuymli noutbuk: talabalar, dasturchilar va safardagi ishlar uchun.',
+                    ru: 'Бесшумный 13-дюймовый ноутбук для учёбы, программирования и работы в дороге.'
+                },
+                specs: {
+                    display: '13.6" Liquid Retina (Demo)',
+                    chip: 'M3 / M4 Class (Demo)',
+                    camera: '1080p FaceTime HD (Demo)',
+                    battery: 'Up to 18h (Demo)',
+                    weight: '1.24 kg (Demo)',
+                    extra: 'Fanless silent design'
+                }
+            },
+            {
+                id: 'macbook-air-15',
+                category: 'Mac',
+                name: 'MacBook Air 15',
+                priceUsd: 1299,
+                rating: 4.8,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Midnight', hex: '#1d2432' },
+                    { name: 'Silver', hex: '#d1d1d6' },
+                    { name: 'Starlight', hex: '#e8e0cf' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Extra screen real estate in a thin featherweight body with immersive six-speaker sound.',
+                    uz: 'Yupqa va yengil korpusda kengroq ekran hamda kuchli olti dinamikli ovoz tizimi.',
+                    ru: 'Больше места на экране в тонком лёгком корпусе с системой из шести динамиков.'
+                },
+                specs: {
+                    display: '15.3" Liquid Retina (Demo)',
+                    chip: 'M3 / M4 Class (Demo)',
+                    camera: '1080p FaceTime HD (Demo)',
+                    battery: 'Up to 18h (Demo)',
+                    weight: '1.51 kg (Demo)',
+                    extra: 'MagSafe charging'
+                }
+            },
+            {
+                id: 'imac-24',
+                category: 'Mac',
+                name: 'iMac',
+                priceUsd: 1299,
+                rating: 4.8,
+                isNew: true,
+                isPopular: false,
+                colors: [
+                    { name: 'Blue', hex: '#5b8ec9' },
+                    { name: 'Green', hex: '#639b76' },
+                    { name: 'Pink', hex: '#df8fa8' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'All-in-one desktop featuring a sharp 4.5K Retina display, color-matched accessories, and slim profile.',
+                    uz: 'Barchasi bir joyda monoblok: 4.5K Retina ekran, mos rangli aksessuarlar va yupqa dizayn.',
+                    ru: 'Моноблок с чётким дисплеем 4.5K Retina, аксессуарами в цвет и тонким корпусом.'
+                },
+                specs: {
+                    display: '24" 4.5K Retina (Demo)',
+                    chip: 'M4 Chip (Demo)',
+                    camera: '12MP Center Stage (Demo)',
+                    battery: 'AC Desktop Power',
+                    weight: '4.43 kg (Demo)',
+                    extra: 'Includes Magic Keyboard & Mouse'
+                }
+            },
+            {
+                id: 'mac-mini',
+                category: 'Mac',
+                name: 'Mac mini',
+                priceUsd: 599,
+                rating: 4.8,
+                isNew: true,
+                isPopular: true,
+                colors: [{ name: 'Silver', hex: '#c7c7cc' }],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Compact desktop powerhouse that pairs effortlessly with your favorite monitor, keyboard, and trackpad.',
+                    uz: 'Ixcham ish stoli kompyuteri: istalgan monitor va klaviatura bilan qulay ishlaydi.',
+                    ru: 'Компактный настольный компьютер, легко подключаемый к любому монитору и периферии.'
+                },
+                specs: {
+                    display: 'External Display Support (Demo)',
+                    chip: 'M4 / M4 Pro (Demo)',
+                    camera: 'External / Continuity (Demo)',
+                    battery: 'AC Desktop Power',
+                    weight: '0.67 kg (Demo)',
+                    extra: 'Ultra-compact footprint'
+                }
+            },
+            {
+                id: 'mac-studio',
+                category: 'Mac',
+                name: 'Mac Studio',
+                priceUsd: 1999,
+                rating: 4.9,
+                isNew: false,
+                isPopular: false,
+                colors: [{ name: 'Silver', hex: '#c7c7cc' }],
+                storage: ['512GB', '1TB', '2TB'],
+                desc: {
+                    en: 'High-throughput creative workstation with generous memory bandwidth and front/back I/O ports.',
+                    uz: 'Ijodkor va mutaxassislar uchun kuchli ish stansiyasi: keng xotira va ko‘plab portlar.',
+                    ru: 'Мощная рабочая станция с высокой пропускной способностью памяти и множеством портов.'
+                },
+                specs: {
+                    display: 'Up to 6 Pro Displays (Demo)',
+                    chip: 'M2 Max / Ultra Class (Demo)',
+                    camera: 'External / Continuity (Demo)',
+                    battery: 'AC Desktop Power',
+                    weight: '2.7 kg (Demo)',
+                    extra: 'Front SD & Thunderbolt ports'
+                }
+            },
+            {
+                id: 'mac-pro',
+                category: 'Mac',
+                name: 'Mac Pro',
+                priceUsd: 6999,
+                rating: 4.7,
+                isNew: false,
+                isPopular: false,
+                colors: [{ name: 'Silver Steel', hex: '#b8b8be' }],
+                storage: ['1TB', '2TB'],
+                desc: {
+                    en: 'Tower workstation with internal PCIe expansion slots for specialized studio cards and enterprise racks.',
+                    uz: 'PCIe kengaytirish slotlariga ega minora ish stansiyasi: maxsus studiya kartalari uchun.',
+                    ru: 'Рабочая станция в корпусе Tower со слотами PCIe для специализированных плат.'
+                },
+                specs: {
+                    display: 'Multi-Display Studio (Demo)',
+                    chip: 'Apple Silicon Pro Tower (Demo)',
+                    camera: 'External / Continuity (Demo)',
+                    battery: 'AC Workstation Power',
+                    weight: '16.8 kg (Demo)',
+                    extra: 'PCIe expansion slots'
+                }
+            },
+
+            // --- IPAD (5 models) ---
+            {
+                id: 'ipad-pro-13',
+                category: 'iPad',
+                name: 'iPad Pro 13',
+                priceUsd: 1299,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Space Black', hex: '#1e1e22' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Ultra-thin 13-inch tablet with Tandem OLED display for digital illustration, editing, and multitasking.',
+                    uz: '13 dyuymli o‘ta yupqa planshet: Tandem OLED ekran, rasm chizish va ko‘p vazifalilik uchun.',
+                    ru: 'Сверхтонкий 13-дюймовый планшет с дисплеем Tandem OLED для графики и многозадачности.'
+                },
+                specs: {
+                    display: '13" Ultra Retina XDR (Demo)',
+                    chip: 'M4 Chip (Demo)',
+                    camera: '12MP Wide + LiDAR (Demo)',
+                    battery: 'Up to 10h (Demo)',
+                    weight: '579 g (Demo)',
+                    extra: 'Apple Pencil Pro compatible'
+                }
+            },
+            {
+                id: 'ipad-pro-11',
+                category: 'iPad',
+                name: 'iPad Pro 11',
+                priceUsd: 999,
+                rating: 4.8,
+                isNew: true,
+                isPopular: false,
+                colors: [
+                    { name: 'Space Black', hex: '#1e1e22' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['256GB', '512GB', '1TB'],
+                desc: {
+                    en: 'Portable 11-inch pro canvas combining OLED contrast with nimble one-handed handling.',
+                    uz: 'Ixcham 11 dyuymli pro planshet: OLED kontrast va qo‘lda olib yurishga qulay o‘lcham.',
+                    ru: 'Компактный 11-дюймовый планшет Pro с OLED-экраном и удобным форматом.'
+                },
+                specs: {
+                    display: '11" Ultra Retina XDR (Demo)',
+                    chip: 'M4 Chip (Demo)',
+                    camera: '12MP Wide Camera (Demo)',
+                    battery: 'Up to 10h (Demo)',
+                    weight: '444 g (Demo)',
+                    extra: 'Thunderbolt / USB 4'
+                }
+            },
+            {
+                id: 'ipad-air',
+                category: 'iPad',
+                name: 'iPad Air',
+                priceUsd: 599,
+                rating: 4.8,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Blue', hex: '#6391c4' },
+                    { name: 'Purple', hex: '#9c92c9' },
+                    { name: 'Starlight', hex: '#e8e0cf' },
+                    { name: 'Space Gray', hex: '#6e6e73' }
+                ],
+                storage: ['128GB', '256GB', '512GB'],
+                desc: {
+                    en: 'Lightweight creative tablet with Liquid Retina display, landscape front camera, and fast silicon.',
+                    uz: 'Yengil planshet: Liquid Retina ekran, old kamera va tezkor ishlash imkoniyati.',
+                    ru: 'Лёгкий планшет с дисплеем Liquid Retina, фронтальной камерой и быстрым чипом.'
+                },
+                specs: {
+                    display: '11" / 13" Liquid Retina (Demo)',
+                    chip: 'M2 / M3 Class (Demo)',
+                    camera: '12MP Wide (Demo)',
+                    battery: 'Up to 10h (Demo)',
+                    weight: '462 g (Demo)',
+                    extra: 'Touch ID in top button'
+                }
+            },
+            {
+                id: 'ipad-mini',
+                category: 'iPad',
+                name: 'iPad mini',
+                priceUsd: 499,
+                rating: 4.7,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Purple', hex: '#9c92c9' },
+                    { name: 'Blue', hex: '#6391c4' },
+                    { name: 'Space Gray', hex: '#5c5c60' }
+                ],
+                storage: ['128GB', '256GB'],
+                desc: {
+                    en: 'Pocket-friendly notebook replacement great for reading, field notes, travel maps, and sketching.',
+                    uz: 'Cho‘ntakbop ixcham planshet: o‘qish, qaydlar olish, sayohat va eskizlar uchun qulay.',
+                    ru: 'Компактный планшет для чтения, заметок, путешествий и быстрых набросков.'
+                },
+                specs: {
+                    display: '8.3" Liquid Retina (Demo)',
+                    chip: 'A17 Pro Class (Demo)',
+                    camera: '12MP Wide (Demo)',
+                    battery: 'Up to 10h (Demo)',
+                    weight: '293 g (Demo)',
+                    extra: 'USB-C & Pencil support'
+                }
+            },
+            {
+                id: 'ipad-standard',
+                category: 'iPad',
+                name: 'iPad',
+                priceUsd: 349,
+                rating: 4.7,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Blue', hex: '#4f86c6' },
+                    { name: 'Yellow', hex: '#f2c94c' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['64GB', '128GB', '256GB'],
+                desc: {
+                    en: 'Everyday iPad for streaming, browsing, video calls, schoolwork, and casual creative projects.',
+                    uz: 'Kundalik iPad: video ko‘rish, o‘qish, qo‘ng‘iroqlar va kundalik vazifalar uchun.',
+                    ru: 'Базовый iPad для видео, браузера, звонков, учёбы и повседневных задач.'
+                },
+                specs: {
+                    display: '10.9" Liquid Retina (Demo)',
+                    chip: 'A14 / A16 Class (Demo)',
+                    camera: '12MP Wide (Demo)',
+                    battery: 'Up to 10h (Demo)',
+                    weight: '477 g (Demo)',
+                    extra: 'Landscape stereo speakers'
+                }
+            },
+
+            // --- APPLE WATCH (3 models) ---
+            {
+                id: 'apple-watch-series',
+                category: 'Watch',
+                name: 'Apple Watch Series',
+                priceUsd: 399,
+                rating: 4.8,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Jet Black', hex: '#141416' },
+                    { name: 'Rose Gold', hex: '#e2b4a6' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['64GB'],
+                desc: {
+                    en: 'Thinner wrist display with health insights, workout metrics, fast charging, and swim resistance.',
+                    uz: 'Yupqaroq ekranli aqlli soat: salomatlik ko‘rsatkichlari, mashqlar va tezkor quvvatlash.',
+                    ru: 'Тонкий дисплей, показатели здоровья, тренировки и быстрая зарядка на запястье.'
+                },
+                specs: {
+                    display: 'Always-On Retina OLED (Demo)',
+                    chip: 'S10 SiP (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 18h (Demo)',
+                    weight: '30 g (Demo)',
+                    extra: 'Water & dust resistant'
+                }
+            },
+            {
+                id: 'apple-watch-se',
+                category: 'Watch',
+                name: 'Apple Watch SE',
+                priceUsd: 249,
+                rating: 4.7,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'Midnight', hex: '#1d1d1f' },
+                    { name: 'Starlight', hex: '#e8e0cf' },
+                    { name: 'Silver', hex: '#d1d1d6' }
+                ],
+                storage: ['32GB'],
+                desc: {
+                    en: 'Essential smartwatch features—activity rings, notifications, sleep tracking—at an approachable price.',
+                    uz: 'Asosiy aqlli soat funksiyalari: faollik, bildirishnomalar va uyqu nazorati qulay narxda.',
+                    ru: 'Ключевые функции смарт-часов — активность, уведомления и сон — по доступной цене.'
+                },
+                specs: {
+                    display: 'Retina OLED (Demo)',
+                    chip: 'S8 SiP (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 18h (Demo)',
+                    weight: '28 g (Demo)',
+                    extra: 'Crash & fall detection (Demo)'
+                }
+            },
+            {
+                id: 'apple-watch-ultra',
+                category: 'Watch',
+                name: 'Apple Watch Ultra',
+                priceUsd: 799,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Natural Titanium', hex: '#9e9a91' },
+                    { name: 'Black Titanium', hex: '#222225' }
+                ],
+                storage: ['64GB'],
+                desc: {
+                    en: 'Rugged titanium adventure watch with dual-frequency GPS, bright flat display, and multi-day battery.',
+                    uz: 'Mustahkam titan soat: aniq GPS, yorqin tekis ekran va bir necha kunlik quvvat.',
+                    ru: 'Прочные титановые часы для активного отдыха с точным GPS и длительной автономностью.'
+                },
+                specs: {
+                    display: '49mm Flat Sapphire OLED (Demo)',
+                    chip: 'S9 / S10 Rugged SiP (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 36h (Demo)',
+                    weight: '61.3 g (Demo)',
+                    extra: 'Action button & Siren'
+                }
+            },
+
+            // --- AIRPODS (3 models) ---
+            {
+                id: 'airpods-pro',
+                category: 'AirPods',
+                name: 'AirPods Pro',
+                priceUsd: 249,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [{ name: 'White', hex: '#f5f5f7' }],
+                storage: ['MagSafe Case'],
+                desc: {
+                    en: 'Active Noise Cancellation, Transparency mode, Personalized Spatial Audio, and silicone ear tips.',
+                    uz: 'Faol shovqinni kamaytirish, shaffof rejim, fazoviy ovoz va silikon quloqchalar.',
+                    ru: 'Активное шумоподавление, режим прозрачности, пространственное аудио и силиконовые вкладыши.'
+                },
+                specs: {
+                    display: 'Case LED Status (Demo)',
+                    chip: 'H2 Headphone Chip (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 30h with case (Demo)',
+                    weight: '5.3 g per bud (Demo)',
+                    extra: 'USB-C & MagSafe case'
+                }
+            },
+            {
+                id: 'airpods-4',
+                category: 'AirPods',
+                name: 'AirPods 4',
+                priceUsd: 129,
+                rating: 4.7,
+                isNew: true,
+                isPopular: true,
+                colors: [{ name: 'White', hex: '#f5f5f7' }],
+                storage: ['USB-C Case'],
+                desc: {
+                    en: 'Open-fit contoured earbuds with clear voice call quality and compact charging case.',
+                    uz: 'Qulay shakldagi simsiz quloqchinlar: tiniq qo‘ng‘iroq ovozi va ixcham g‘ilof.',
+                    ru: 'Вкладыши анатомической формы с чёткой передачей голоса и компактным кейсом.'
+                },
+                specs: {
+                    display: 'Case LED Status (Demo)',
+                    chip: 'H2 Acoustic Architecture (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 30h with case (Demo)',
+                    weight: '4.3 g per bud (Demo)',
+                    extra: 'Voice Isolation (Demo)'
+                }
+            },
+            {
+                id: 'airpods-max',
+                category: 'AirPods',
+                name: 'AirPods Max',
+                priceUsd: 549,
+                rating: 4.7,
+                isNew: true,
+                isPopular: false,
+                colors: [
+                    { name: 'Midnight', hex: '#1d2432' },
+                    { name: 'Starlight', hex: '#e8e0cf' },
+                    { name: 'Blue', hex: '#6391c4' },
+                    { name: 'Purple', hex: '#9c92c9' },
+                    { name: 'Orange', hex: '#e07a3f' }
+                ],
+                storage: ['Smart Case'],
+                desc: {
+                    en: 'Over-ear anodized aluminum headphones with plush knit mesh cushions and Digital Crown control.',
+                    uz: 'Alyuminiy korpusli quloq usti naushniklar: yumshoq yostiqchalar va Digital Crown boshqaruvi.',
+                    ru: 'Полноразмерные наушники с алюминиевыми чашками, сетчатым оголовьем и Digital Crown.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'Dual H1 Chips (Demo)',
+                    camera: 'N/A',
+                    battery: 'Up to 20h listening (Demo)',
+                    weight: '384.8 g (Demo)',
+                    extra: 'USB-C charging (Demo)'
+                }
+            },
+
+            // --- ACCESSORIES (10 models) ---
+            {
+                id: 'apple-pencil-pro',
+                category: 'Accessories',
+                name: 'Apple Pencil Pro',
+                priceUsd: 129,
+                rating: 4.9,
+                isNew: true,
+                isPopular: true,
+                colors: [{ name: 'White', hex: '#f5f5f7' }],
+                storage: ['Standard'],
+                desc: {
+                    en: 'Precision stylus with squeeze gesture, barrel roll rotation, haptic feedback, and Find My support.',
+                    uz: 'Aniqligi yuqori stilus: siqish ishorasi, aylantirish, taktil javob va Find My qo‘llovi.',
+                    ru: 'Стилус с распознаванием сжатия, поворота корпуса, тактильным откликом и Find My.'
+                },
+                specs: {
+                    display: 'iPad OLED/Liquid Retina (Demo)',
+                    chip: 'Custom Pencil Sensor (Demo)',
+                    camera: 'N/A',
+                    battery: 'Magnetic wireless charge',
+                    weight: '19.15 g (Demo)',
+                    extra: 'Haptic feedback & barrel roll'
+                }
+            },
+            {
+                id: 'apple-pencil-usb-c',
+                category: 'Accessories',
+                name: 'Apple Pencil USB-C',
+                priceUsd: 79,
+                rating: 4.6,
+                isNew: false,
+                isPopular: false,
+                colors: [{ name: 'Matte White', hex: '#f2f2f7' }],
+                storage: ['Standard'],
+                desc: {
+                    en: 'Pixel-accurate stylus with low latency and sliding USB-C port for pairing and charging.',
+                    uz: 'Aniq chizish uchun stilus: past kechikish va quvvatlash uchun suriladigan USB-C port.',
+                    ru: 'Точный стилус с низкой задержкой и выдвижным разъёмом USB-C для зарядки.'
+                },
+                specs: {
+                    display: 'Compatible iPads (Demo)',
+                    chip: 'Precision Stylus Controller',
+                    camera: 'N/A',
+                    battery: 'USB-C charge',
+                    weight: '20.5 g (Demo)',
+                    extra: 'Magnetic storage on side'
+                }
+            },
+            {
+                id: 'magic-keyboard',
+                category: 'Accessories',
+                name: 'Magic Keyboard',
+                priceUsd: 299,
+                rating: 4.8,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Black', hex: '#1c1c1e' },
+                    { name: 'White', hex: '#f5f5f7' }
+                ],
+                storage: ['US English'],
+                desc: {
+                    en: 'Floating cantilever keyboard with backlit keys, function row, and built-in trackpad.',
+                    uz: 'Yoritilgan tugmalar, funksiya qatori va o‘rnatilgan trekpadga ega qulay klaviatura.',
+                    ru: 'Клавиатура с подсветкой клавиш, функциональным рядом и встроенным трекпадом.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'Smart Connector / Bluetooth',
+                    camera: 'N/A',
+                    battery: 'Integrated power pass-through',
+                    weight: '660 g (Demo)',
+                    extra: '14-key function row'
+                }
+            },
+            {
+                id: 'magic-mouse',
+                category: 'Accessories',
+                name: 'Magic Mouse',
+                priceUsd: 79,
+                rating: 4.4,
+                isNew: false,
+                isPopular: true,
+                colors: [
+                    { name: 'White', hex: '#f5f5f7' },
+                    { name: 'Black', hex: '#1c1c1e' }
+                ],
+                storage: ['Standard'],
+                desc: {
+                    en: 'Wireless multi-touch mouse with smooth glide underside and gesture scrolling.',
+                    uz: 'Simsiz multi-touch sichqoncha: silliq sirpanish va imo-ishora bilan aylantirish.',
+                    ru: 'Беспроводная мышь с поддержкой мультитач-жестов и плавным скольжением.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'Bluetooth Low Energy',
+                    camera: 'N/A',
+                    battery: 'Rechargeable lithium battery',
+                    weight: '99 g (Demo)',
+                    extra: 'Multi-Touch surface'
+                }
+            },
+            {
+                id: 'magic-trackpad',
+                category: 'Accessories',
+                name: 'Magic Trackpad',
+                priceUsd: 129,
+                rating: 4.8,
+                isNew: false,
+                isPopular: false,
+                colors: [
+                    { name: 'White', hex: '#f5f5f7' },
+                    { name: 'Black', hex: '#1c1c1e' }
+                ],
+                storage: ['Standard'],
+                desc: {
+                    en: 'Wide glass surface supporting Force Touch and full macOS multi-finger gestures on desktops.',
+                    uz: 'Keng shisha sirt: Force Touch va barcha ko‘p barmoqli imo-ishoralarni qo‘llaydi.',
+                    ru: 'Широкая стеклянная поверхность с поддержкой Force Touch и жестов macOS.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'Bluetooth Wireless',
+                    camera: 'N/A',
+                    battery: 'Up to 1 month per charge (Demo)',
+                    weight: '231 g (Demo)',
+                    extra: 'Force Touch sensors'
+                }
+            },
+            {
+                id: 'airtag',
+                category: 'Accessories',
+                name: 'AirTag',
+                priceUsd: 29,
+                rating: 4.8,
+                isNew: false,
+                isPopular: true,
+                colors: [{ name: 'Silver / White', hex: '#d1d1d6' }],
+                storage: ['1 Pack'],
+                desc: {
+                    en: 'Compact item tracker with Precision Finding and built-in speaker to locate keys, bags, and gear.',
+                    uz: 'Kalit, sumka va buyumlarni topish uchun ixcham treker: aniq qidiruv va ovozli signal.',
+                    ru: 'Компактный маячок для поиска ключей, рюкзаков и вещей с точным поиском.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'U1 / Ultra Wideband (Demo)',
+                    camera: 'N/A',
+                    battery: 'Replaceable CR2032 cell',
+                    weight: '11 g (Demo)',
+                    extra: 'Water resistant IP67 (Demo)'
+                }
+            },
+            {
+                id: 'magsafe-charger',
+                category: 'Accessories',
+                name: 'MagSafe Charger',
+                priceUsd: 39,
+                rating: 4.7,
+                isNew: false,
+                isPopular: true,
+                colors: [{ name: 'Silver / White', hex: '#e5e5ea' }],
+                storage: ['1m Cable'],
+                desc: {
+                    en: 'Magnetic wireless puck that aligns cleanly with compatible iPhone and AirPods cases.',
+                    uz: 'Magnitli simsiz quvvatlagich: mos iPhone va AirPods g‘iloflariga aniq ulanadi.',
+                    ru: 'Магнитное беспроводное зарядное устройство с точным позиционированием.'
+                },
+                specs: {
+                    display: 'N/A',
+                    chip: 'MagSafe Power Controller',
+                    camera: 'N/A',
+                    battery: 'Wireless pad',
+                    weight: '55 g (Demo)',
+                    extra: 'Braided USB-C cable (Demo)'
+                }
+            },
+            {
+                id: 'usb-c-adapter',
+                category: 'Accessories',
+                name: 'USB-C Adapter',
+                priceUsd: 69,
+                rating: 4.6,
+                isNew: false,
+                isPopular: false,
+                colors: [{ name: 'White', hex: '#f2f2f7' }],
+                storage: ['Multiport / Power'],
+                desc: {
+                    en: 'Reliable USB-C power & connectivity adapter for laptops, tablets, and external displays.',
+                    uz: 'Noutbuk, planshet va tashqi qurilmalar uchun ishonchli USB-C quvvat va ulanish adapteri.',
+                    ru: 'Надёжный адаптер USB-C для питания и подключения устройств и мониторов.'
+                },
+                specs: {
+                    display: 'Up to 4K60 HDMI (Demo)',
+                    chip: 'Power Delivery Controller',
+                    camera: 'N/A',
+                    battery: 'Wall / Bus powered',
+                    weight: '85 g (Demo)',
+                    extra: 'Compact travel size'
+                }
+            },
+            {
+                id: 'iphone-case',
+                category: 'Accessories',
+                name: 'iPhone Case',
+                priceUsd: 49,
+                rating: 4.7,
+                isNew: true,
+                isPopular: true,
+                colors: [
+                    { name: 'Slate Blue', hex: '#5c768d' },
+                    { name: 'Terracotta', hex: '#c46d4e' },
+                    { name: 'Black', hex: '#1c1c1e' }
+                ],
+                storage: ['Standard Fit'],
+                desc: {
+                    en: 'Soft-touch protective case with microfiber lining and built-in magnets for quick attachment.',
+                    uz: 'Mikrofiber astarli himoya g‘ilofi: tez ulanish uchun o‘rnatilgan magnitlar bilan.',
+                    ru: 'Защитный чехол с подкладкой из микрофибры и встроенными магнитами.'
+                },
+                specs: {
+                    display: 'Raised bezel protection',
+                    chip: 'N/A',
+                    camera: 'Camera ring guard',
+                    battery: 'MagSafe pass-through',
+                    weight: '32 g (Demo)',
+                    extra: 'Soft exterior finish'
+                }
+            },
+            {
+                id: 'macbook-sleeve',
+                category: 'Accessories',
+                name: 'MacBook Sleeve',
+                priceUsd: 129,
+                rating: 4.8,
+                isNew: false,
+                isPopular: false,
+                colors: [
+                    { name: 'Saddle Gray', hex: '#6e6a63' },
+                    { name: 'Obsidian', hex: '#232326' }
+                ],
+                storage: ['13"–16" Fit'],
+                desc: {
+                    en: 'Structured protective sleeve with soft interior lining to guard your MacBook on daily commutes.',
+                    uz: 'Kundalik yurishlarda MacBook’ni himoya qiluvchi yumshoq ichki qoplamali g‘ilof.',
+                    ru: 'Аккуратный защитный чехол с мягкой подкладкой для повседневной переноски MacBook.'
+                },
+                specs: {
+                    display: 'Scratch-resistant lining',
+                    chip: 'N/A',
+                    camera: 'N/A',
+                    battery: 'N/A',
+                    weight: '210 g (Demo)',
+                    extra: 'Slim structured profile'
+                }
+            }
+        ];
+
+        /* =========================================================================
+           4. APPLICATION STATE & LOCALSTORAGE HELPERS
+           ========================================================================= */
+        function readStorage(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : fallback;
+            } catch (err) {
+                console.warn('Storage read error:', err);
+                return fallback;
+            }
+        }
+
+        function writeStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (err) {
+                console.warn('Storage write error:', err);
+            }
+        }
+
+        const state = {
+            lang: localStorage.getItem(STORAGE_KEYS.LANG) || 'en',
+            theme: localStorage.getItem(STORAGE_KEYS.THEME) || 'light',
+            category: 'all',
+            search: '',
+            sort: 'featured',
+            heroIndex: 0,
+            cart: readStorage(STORAGE_KEYS.CART, []),
+            favorites: readStorage(STORAGE_KEYS.FAVORITES, ['iphone-17-pro-max', 'macbook-pro-14']),
+            compare: readStorage(STORAGE_KEYS.COMPARE, ['iphone-17-pro-max', 'iphone-17-pro']),
+            orders: readStorage(STORAGE_KEYS.ORDERS, [
+                {
+                    id: 'ORD-DEMO-1042',
+                    date: '2026-11-10',
+                    customerName: 'Aziza Karimova (Demo)',
+                    address: 'Tashkent, Yunusabad (Demo)',
+                    payment: 'Demo Card Simulation',
+                    itemsCount: 1,
+                    itemsSummary: 'AirPods Pro (White, MagSafe Case) × 1',
+                    deliveryUsd: 0,
+                    totalUsd: 249,
+                    status: 'Delivered (Demo)'
+                }
+            ]),
+            // Only non-sensitive user profile info; never passwords or full card numbers
+            sessionUser: readStorage(STORAGE_KEYS.SESSION, null),
+            perCardSelection: {}
+        };
+
+        function t(key) {
+            const pack = TRANSLATIONS[state.lang] || TRANSLATIONS.en;
+            return pack[key] || TRANSLATIONS.en[key] || key;
+        }
+
+        function formatPrice(usdAmount) {
+            const uzs = Math.round(usdAmount * USD_TO_UZS);
+            return {
+                usd: `$${usdAmount.toLocaleString('en-US')}`,
+                uzs: `${uzs.toLocaleString('en-US')} UZS`
+            };
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(showToast._timer);
+            showToast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2400);
+        }
+
+        /* =========================================================================
+           5. THEME & LANGUAGE APPLICATION
+           ========================================================================= */
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', state.theme);
+            document.getElementById('themeIcon').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem(STORAGE_KEYS.THEME, state.theme);
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = state.lang;
+            document.getElementById('langSelect').value = state.lang;
+            localStorage.setItem(STORAGE_KEYS.LANG, state.lang);
+
+            document.querySelectorAll('[data-i18n]').forEach((el) => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+
+            const searchInput = document.getElementById('searchInput');
+            if (state.lang === 'uz') {
+                searchInput.placeholder = '40 ta mahsulot ichidan nomi, chip yoki tavsif bo‘yicha qidiring...';
+            } else if (state.lang === 'ru') {
+                searchInput.placeholder = 'Поиск среди 40 товаров по названию, чипу или описанию...';
+            } else {
+                searchInput.placeholder = 'Search 40 products by name, chip, or feature...';
+            }
+
+            updateAuthButtonLabel();
+            renderHero();
+            renderCategoryPills();
+            renderCatalog();
+            renderHighlights();
+            renderReviews();
+            renderFAQ();
+            updateBadges();
+        }
+
+        function updateBadges() {
+            const cartQty = state.cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCountBadge').textContent = cartQty;
+            document.getElementById('favoritesCountBadge').textContent = state.favorites.length;
+            document.getElementById('compareCountBadge').textContent = state.compare.length;
+            document.getElementById('compareToolbarCount').textContent = state.compare.length;
+            document.getElementById('ordersToolbarCount').textContent = state.orders.length;
+        }
+
+        function updateAuthButtonLabel() {
+            const labelEl = document.getElementById('authNavLabel');
+            if (state.sessionUser && state.sessionUser.firstName) {
+                labelEl.textContent = state.sessionUser.firstName;
+            } else {
+                labelEl.textContent = t('navAccount');
+            }
+        }
+
+        /* =========================================================================
+           6. HERO, CATEGORY PILLS, FILTERING, SORTING & PRODUCT CARDS
+           ========================================================================= */
+        const HERO_SLIDES = [
+            'iphone-17-pro-max',
+            'macbook-pro-14',
+            'ipad-pro-13',
+            'apple-watch-ultra'
+        ];
+
+        function renderHero() {
+            const productId = HERO_SLIDES[state.heroIndex % HERO_SLIDES.length];
+            const product = PRODUCTS.find((p) => p.id === productId) || PRODUCTS[0];
+            const price = formatPrice(product.priceUsd);
+
+            document.getElementById('heroEyebrow').textContent = `${product.category.toUpperCase()} • ${price.usd} (${price.uzs}) • DEMO`;
+            document.getElementById('heroTitle').textContent = product.name;
+            document.getElementById('heroDesc').textContent = product.desc[state.lang] || product.desc.en;
+            document.getElementById('heroVisual').innerHTML = generateProductSVG(product, product.colors[0].hex);
+
+            document.getElementById('heroShopBtn').onclick = () => {
+                state.category = product.category;
+                renderCategoryPills();
+                renderCatalog();
+                document.getElementById('catalogSection').scrollIntoView({ behavior: 'smooth' });
+            };
+
+            document.getElementById('heroDetailsBtn').onclick = () => openProductDetail(product.id);
+
+            const dotsContainer = document.getElementById('heroSlideDots');
+            dotsContainer.innerHTML = '';
+            HERO_SLIDES.forEach((id, idx) => {
+                const item = PRODUCTS.find((p) => p.id === id);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `hero-slide-dot ${idx === state.heroIndex ? 'active' : ''}`;
+                btn.textContent = item ? item.name : `Slide ${idx + 1}`;
+                btn.onclick = () => {
+                    state.heroIndex = idx;
+                    renderHero();
+                };
+                dotsContainer.appendChild(btn);
+            });
+        }
+
+        const CATEGORIES = ['all', 'iPhone', 'Mac', 'iPad', 'Watch', 'AirPods', 'Accessories'];
+
+        function renderCategoryPills() {
+            const container = document.getElementById('categoryPills');
+            container.innerHTML = '';
+
+            CATEGORIES.forEach((cat) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `cat-pill ${state.category === cat ? 'active' : ''}`;
+                if (cat === 'all') btn.textContent = t('allCategories');
+                else if (cat === 'Accessories') btn.textContent = t('navAccessories');
+                else btn.textContent = cat;
+
+                btn.onclick = () => {
+                    state.category = cat;
+                    syncNavActiveState();
+                    renderCategoryPills();
+                    renderCatalog();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function syncNavActiveState() {
+            document.querySelectorAll('[data-nav-cat]').forEach((btn) => {
+                const cat = btn.getAttribute('data-nav-cat');
+                btn.classList.toggle('active', cat === state.category);
+            });
+        }
+
+        function getSelectionForProduct(product) {
+            if (!state.perCardSelection[product.id]) {
+                state.perCardSelection[product.id] = {
+                    colorIndex: 0,
+                    storageIndex: 0,
+                    qty: 1
+                };
+            }
+            return state.perCardSelection[product.id];
+        }
+
+        function getFilteredSortedProducts() {
+            const q = state.search.trim().toLowerCase();
+            let list = PRODUCTS.filter((p) => {
+                const matchesCat = state.category === 'all' || p.category === state.category;
+                if (!matchesCat) return false;
+                if (!q) return true;
+                const localizedDesc = (p.desc[state.lang] || p.desc.en).toLowerCase();
+                return (
+                    p.name.toLowerCase().includes(q) ||
+                    p.category.toLowerCase().includes(q) ||
+                    p.specs.chip.toLowerCase().includes(q) ||
+                    localizedDesc.includes(q)
+                );
+            });
+
+            if (state.sort === 'newest') {
+                list = [...list].sort((a, b) => Number(b.isNew) - Number(a.isNew));
+            } else if (state.sort === 'popular') {
+                list = [...list].sort((a, b) => (Number(b.isPopular) * 10 + b.rating) - (Number(a.isPopular) * 10 + a.rating));
+            } else if (state.sort === 'price-asc') {
+                list = [...list].sort((a, b) => a.priceUsd - b.priceUsd);
+            } else if (state.sort === 'price-desc') {
+                list = [...list].sort((a, b) => b.priceUsd - a.priceUsd);
+            }
+            return list;
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('productsGrid');
+            const items = getFilteredSortedProducts();
+            document.getElementById('resultsCountText').textContent = `${items.length} / ${PRODUCTS.length} (${t('navHome')})`;
+
+            if (items.length === 0) {
+                grid.innerHTML = `<div class="info-card" style="grid-column:1 / -1; text-align:center;">No matching products found.</div>`;
+                return;
+            }
+
+            grid.innerHTML = '';
+            items.forEach((product) => {
+                const sel = getSelectionForProduct(product);
+                const activeColor = product.colors[sel.colorIndex] || product.colors[0];
+                const activeStorage = product.storage[sel.storageIndex] || product.storage[0];
+                const isFav = state.favorites.includes(product.id);
+                const isComp = state.compare.includes(product.id);
+                const price = formatPrice(product.priceUsd);
+
+                const card = document.createElement('article');
+                card.className = 'product-card';
+
+                card.innerHTML = `
+          <div>
+            <div class="card-top">
+              <span class="tag-badge ${product.isNew ? 'tag-new' : ''}">${product.isNew ? t('newBadge') : product.category}</span>
+              <div class="card-actions-top">
+                <button type="button" class="mini-icon-btn ${isComp ? 'compare-active' : ''}" title="${t('compareBtn')}" aria-label="Compare ${product.name}">⚖️</button>
+                <button type="button" class="mini-icon-btn ${isFav ? 'active' : ''}" title="Favorite" aria-label="Favorite ${product.name}">${isFav ? '♥' : '♡'}</button>
+              </div>
+            </div>
+
+            <div class="product-visual-box" style="margin-top:12px;">
+              ${generateProductSVG(product, activeColor.hex)}
+            </div>
+
+            <div class="product-cat-line" style="margin-top:12px;">
+              <span>${product.category}</span>
+              <span class="product-rating">★ ${product.rating.toFixed(1)}</span>
+            </div>
+
+            <h3 class="product-title" style="margin-top:4px;">${product.name}</h3>
+            <p class="product-desc" style="margin-top:6px;">${product.desc[state.lang] || product.desc.en}</p>
+
+            <div class="option-row" style="margin-top:12px;">
+              <div class="swatches" aria-label="Colors">
+                ${product.colors.map((c, idx) => `
+                  <button
+                    type="button"
+                    class="swatch ${idx === sel.colorIndex ? 'selected' : ''}"
+                    style="background:${c.hex};"
+                    title="${c.name}"
+                    aria-label="${c.name}"
+                    data-color-idx="${idx}"
+                  ></button>
+                `).join('')}
+              </div>
+
+              <div class="storage-pills" aria-label="Storage or Edition">
+                ${product.storage.map((st, idx) => `
+                  <button
+                    type="button"
+                    class="storage-chip ${idx === sel.storageIndex ? 'selected' : ''}"
+                    data-storage-idx="${idx}"
+                  >${st}</button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="price-block" style="margin-bottom:10px;">
+              <div class="price-usd">${price.usd}</div>
+              <div class="price-uzs">${price.uzs} • ${activeColor.name} • ${activeStorage}</div>
+            </div>
+            <div class="card-footer-btns">
+              <button type="button" class="btn btn-secondary btn-sm detail-btn">${t('viewDetails')}</button>
+              <button type="button" class="btn btn-primary btn-sm add-cart-btn">${t('addToCart')}</button>
+            </div>
+          </div>
+        `;
+
+                const compareBtn = card.querySelectorAll('.mini-icon-btn')[0];
+                const favBtn = card.querySelectorAll('.mini-icon-btn')[1];
+                compareBtn.onclick = () => toggleCompare(product.id);
+                favBtn.onclick = () => toggleFavorite(product.id);
+
+                card.querySelector('.product-visual-box').onclick = () => openProductDetail(product.id);
+                card.querySelector('.product-title').onclick = () => openProductDetail(product.id);
+                card.querySelector('.detail-btn').onclick = () => openProductDetail(product.id);
+
+                card.querySelectorAll('.swatch').forEach((swatchBtn) => {
+                    swatchBtn.onclick = () => {
+                        sel.colorIndex = Number(swatchBtn.getAttribute('data-color-idx'));
+                        renderCatalog();
+                    };
+                });
+
+                card.querySelectorAll('.storage-chip').forEach((chipBtn) => {
+                    chipBtn.onclick = () => {
+                        sel.storageIndex = Number(chipBtn.getAttribute('data-storage-idx'));
+                        renderCatalog();
+                    };
+                });
+
+                card.querySelector('.add-cart-btn').onclick = () => {
+                    addToCart(product, activeColor.name, activeStorage, 1);
+                };
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* =========================================================================
+           7. CART, FAVORITES, COMPARE & PRODUCT DETAILS MODAL
+           ========================================================================= */
+        function addToCart(product, colorName, storageOption, qty = 1) {
+            const existing = state.cart.find(
+                (item) => item.id === product.id && item.color === colorName && item.storage === storageOption
+            );
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                state.cart.push({
+                    id: product.id,
+                    name: product.name,
+                    category: product.category,
+                    priceUsd: product.priceUsd,
+                    color: colorName,
+                    storage: storageOption,
+                    qty
+                });
+            }
+            writeStorage(STORAGE_KEYS.CART, state.cart);
+            updateBadges();
+            showToast(`${product.name} — ${t('addedToCart')}`);
+        }
+
+        function toggleFavorite(productId) {
+            const idx = state.favorites.indexOf(productId);
+            if (idx >= 0) {
+                state.favorites.splice(idx, 1);
+                showToast(t('removedFromFav'));
+            } else {
+                state.favorites.push(productId);
+                showToast(t('addedToFav'));
+            }
+            writeStorage(STORAGE_KEYS.FAVORITES, state.favorites);
+            updateBadges();
+            renderCatalog();
+        }
+
+        function toggleCompare(productId) {
+            const idx = state.compare.indexOf(productId);
+            if (idx >= 0) {
+                state.compare.splice(idx, 1);
+                writeStorage(STORAGE_KEYS.COMPARE, state.compare);
+                updateBadges();
+                renderCatalog();
+                showToast(t('removedFromCompare'));
+                return;
+            }
+            if (state.compare.length >= 3) {
+                showToast(t('maxCompareReached'));
+                return;
+            }
+            state.compare.push(productId);
+            writeStorage(STORAGE_KEYS.COMPARE, state.compare);
+            updateBadges();
+            renderCatalog();
+            showToast(t('addedToCompare'));
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function openProductDetail(productId, directCheckout = false) {
+            const product = PRODUCTS.find((p) => p.id === productId);
+            if (!product) return;
+
+            let selectedColor = product.colors[0];
+            let selectedStorage = product.storage[0];
+            let qty = 1;
+            let activeAngle = 0;
+
+            document.getElementById('detailTitle').textContent = product.name;
+            const body = document.getElementById('detailBody');
+
+            function renderDetailView() {
+                const price = formatPrice(product.priceUsd * qty);
+                const angleTint = activeAngle === 0 ? selectedColor.hex : activeAngle === 1 ? '#8e8e93' : '#0071e3';
+
+                body.innerHTML = `
+          <div class="detail-layout">
+            <div>
+              <div class="detail-gallery-main">
+                ${generateProductSVG(product, angleTint)}
+              </div>
+              <div class="detail-thumbs">
+                <button type="button" class="detail-thumb ${activeAngle === 0 ? 'active' : ''}" data-angle="0">${generateProductSVG(product, selectedColor.hex)}</button>
+                <button type="button" class="detail-thumb ${activeAngle === 1 ? 'active' : ''}" data-angle="1">${generateProductSVG(product, '#8e8e93')}</button>
+                <button type="button" class="detail-thumb ${activeAngle === 2 ? 'active' : ''}" data-angle="2">${generateProductSVG(product, '#0071e3')}</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="product-cat-line" style="margin-bottom:8px;">
+                <span>${product.category} • Demo Spec</span>
+                <span class="product-rating">★ ${product.rating.toFixed(1)}</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:14px;">${product.desc[state.lang] || product.desc.en}</p>
+
+              <div style="margin-bottom:12px;">
+                <div class="form-label">${selectedColor.name}</div>
+                <div class="swatches">
+                  ${product.colors.map((c) => `
+                    <button type="button" class="swatch ${c.name === selectedColor.name ? 'selected' : ''}" style="background:${c.hex};" data-cname="${c.name}" title="${c.name}"></button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div style="margin-bottom:14px;">
+                <div class="form-label">${selectedStorage}</div>
+                <div class="storage-pills">
+                  ${product.storage.map((st) => `
+                    <button type="button" class="storage-chip ${st === selectedStorage ? 'selected' : ''}" data-sname="${st}">${st}</button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+                <div>
+                  <div class="price-usd" style="font-size:1.35rem;">${price.usd}</div>
+                  <div class="price-uzs">${price.uzs}</div>
+                </div>
+                <div class="qty-control">
+                  <button type="button" class="qty-btn" id="detailQtyMinus">−</button>
+                  <span id="detailQtyVal">${qty}</span>
+                  <button type="button" class="qty-btn" id="detailQtyPlus">+</button>
+                </div>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px;">
+                <button type="button" class="btn btn-primary" id="detailAddCartBtn">${t('addToCart')}</button>
+                <button type="button" class="btn btn-secondary" id="detailOrderNowBtn">${t('buyNow')}</button>
+              </div>
+
+              <table class="specs-table">
+                <tbody>
+                  <tr><th>${t('specDisplay')}</th><td>${product.specs.display}</td></tr>
+                  <tr><th>${t('specChip')}</th><td>${product.specs.chip}</td></tr>
+                  <tr><th>${t('specCamera')}</th><td>${product.specs.camera}</td></tr>
+                  <tr><th>${t('specBattery')}</th><td>${product.specs.battery}</td></tr>
+                  <tr><th>${t('specWeight')}</th><td>${product.specs.weight}</td></tr>
+                  <tr><th>${t('specExtra')}</th><td>${product.specs.extra}</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+                body.querySelectorAll('.detail-thumb').forEach((th) => {
+                    th.onclick = () => {
+                        activeAngle = Number(th.getAttribute('data-angle'));
+                        renderDetailView();
+                    };
+                });
+
+                body.querySelectorAll('[data-cname]').forEach((sw) => {
+                    sw.onclick = () => {
+                        const cname = sw.getAttribute('data-cname');
+                        selectedColor = product.colors.find((c) => c.name === cname) || product.colors[0];
+                        activeAngle = 0;
+                        renderDetailView();
+                    };
+                });
+
+                body.querySelectorAll('[data-sname]').forEach((ch) => {
+                    ch.onclick = () => {
+                        selectedStorage = ch.getAttribute('data-sname');
+                        renderDetailView();
+                    };
+                });
+
+                body.querySelector('#detailQtyMinus').onclick = () => {
+                    if (qty > 1) { qty -= 1; renderDetailView(); }
+                };
+                body.querySelector('#detailQtyPlus').onclick = () => {
+                    qty += 1; renderDetailView();
+                };
+
+                body.querySelector('#detailAddCartBtn').onclick = () => {
+                    addToCart(product, selectedColor.name, selectedStorage, qty);
+                    closeModal('detailModal');
+                };
+
+                body.querySelector('#detailOrderNowBtn').onclick = () => {
+                    addToCart(product, selectedColor.name, selectedStorage, qty);
+                    closeModal('detailModal');
+                    openCartModal(true);
+                };
+            }
+
+            renderDetailView();
+            openModal('detailModal');
+            if (directCheckout) {
+                closeModal('detailModal');
+                openCartModal(true);
+            }
+        }
+
+        function openCartModal(startInCheckout = false) {
+            const body = document.getElementById('cartBody');
+            let showCheckoutForm = startInCheckout;
+
+            function renderCartContent() {
+                if (state.cart.length === 0) {
+                    body.innerHTML = `<p style="color:var(--text-secondary); padding:16px 0;">${t('cartEmpty')}</p>`;
+                    return;
+                }
+
+                const subtotalUsd = state.cart.reduce((sum, item) => sum + item.priceUsd * item.qty, 0);
+                const deliveryUsd = subtotalUsd >= 500 ? 0 : 15;
+                const totalUsd = subtotalUsd + deliveryUsd;
+                const subFmt = formatPrice(subtotalUsd);
+                const delFmt = formatPrice(deliveryUsd);
+                const totFmt = formatPrice(totalUsd);
+
+                body.innerHTML = `
+          <div>
+            ${state.cart.map((item, idx) => {
+                    const prod = PRODUCTS.find((p) => p.id === item.id) || PRODUCTS[0];
+                    const lineFmt = formatPrice(item.priceUsd * item.qty);
+                    return `
+                <div class="cart-item">
+                  <div style="height:56px; background:var(--bg-elevated); border-radius:var(--radius-sm); padding:4px; display:flex; align-items:center; justify-content:center;">
+                    ${generateProductSVG(prod, prod.colors[0].hex)}
+                  </div>
+                  <div>
+                    <div style="font-weight:600;">${item.name}</div>
+                    <div style="font-size:0.78rem; color:var(--text-secondary);">${item.color} • ${item.storage}</div>
+                    <div style="font-size:0.84rem; font-weight:600; margin-top:2px;">${lineFmt.usd} <span style="font-weight:400; color:var(--text-muted);">(${lineFmt.uzs})</span></div>
+                  </div>
+                  <div class="cart-item-right" style="text-align:right;">
+                    <div class="qty-control">
+                      <button type="button" class="qty-btn cart-dec" data-idx="${idx}">−</button>
+                      <span>${item.qty}</span>
+                      <button type="button" class="qty-btn cart-inc" data-idx="${idx}">+</button>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm cart-rem" data-idx="${idx}" style="margin-top:6px;">✕</button>
+                  </div>
+                </div>
+              `;
+                }).join('')}
+
+            <div style="margin-top:18px; padding:16px; background:var(--bg-elevated); border-radius:var(--radius-md); font-size:0.88rem;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <span>${t('cartSubtotal')}</span>
+                <span>${subFmt.usd} (${subFmt.uzs})</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span>${t('cartDelivery')}</span>
+                <span>${deliveryUsd === 0 ? 'FREE (Demo)' : `${delFmt.usd} (${delFmt.uzs})`}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1rem; padding-top:8px; border-top:1px solid var(--border-subtle);">
+                <span>${t('cartTotal')}</span>
+                <span>${totFmt.usd} (${totFmt.uzs})</span>
+              </div>
+            </div>
+
+            ${!showCheckoutForm ? `
+              <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                <button type="button" class="btn btn-primary" id="startCheckoutBtn">${t('checkoutBtn')}</button>
+              </div>
+            ` : `
+              <form id="checkoutForm" style="margin-top:18px; padding-top:16px; border-top:1px solid var(--border-subtle);" novalidate>
+                <h4 style="font-size:1.05rem; font-weight:600; margin-bottom:12px;">${t('checkoutBtn')} (Demo)</h4>
+                <div class="form-group">
+                  <label class="form-label" for="chkName">${t('labelName')}</label>
+                  <input type="text" id="chkName" class="form-control" value="${state.sessionUser ? `${state.sessionUser.firstName} ${state.sessionUser.lastName}` : ''}" required />
+                  <div class="field-error" id="chkNameErr"></div>
+                </div>
+                <div class="two-col" style="gap:12px;">
+                  <div class="form-group">
+                    <label class="form-label" for="chkPhone">${t('labelPhone')}</label>
+                    <input type="tel" id="chkPhone" class="form-control" value="${state.sessionUser ? state.sessionUser.phone || '' : ''}" required />
+                    <div class="field-error" id="chkPhoneErr"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="chkEmail">${t('labelEmail')}</label>
+                    <input type="email" id="chkEmail" class="form-control" value="${state.sessionUser ? state.sessionUser.email || '' : ''}" required />
+                    <div class="field-error" id="chkEmailErr"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="chkAddress">${t('labelAddress')}</label>
+                  <input type="text" id="chkAddress" class="form-control" required />
+                  <div class="field-error" id="chkAddressErr"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="chkPayment">${t('labelPaymentMethod')}</label>
+                  <select id="chkPayment" class="form-control">
+                    <option value="Demo Card (Simulated)">Demo Card (Simulated — No real charge)</option>
+                    <option value="Cash on Delivery (Demo)">Cash on Delivery (Demo)</option>
+                    <option value="Bank Transfer (Demo)">Bank Transfer (Demo)</option>
+                  </select>
+                </div>
+                <p style="font-size:0.76rem; color:var(--text-muted); margin-bottom:12px;">
+                  Real card payments require a secure payment backend and provider integration. This checkout simulates a demo order locally.
+                </p>
+                <button type="submit" class="btn btn-primary">${t('confirmOrderBtn')}</button>
+                <div class="status-banner" id="checkoutStatus"></div>
+              </form>
+            `}
+          </div>
+        `;
+
+                body.querySelectorAll('.cart-dec').forEach((btn) => {
+                    btn.onclick = () => {
+                        const i = Number(btn.getAttribute('data-idx'));
+                        if (state.cart[i].qty > 1) state.cart[i].qty -= 1;
+                        else state.cart.splice(i, 1);
+                        writeStorage(STORAGE_KEYS.CART, state.cart);
+                        updateBadges();
+                        renderCartContent();
+                    };
+                });
+
+                body.querySelectorAll('.cart-inc').forEach((btn) => {
+                    btn.onclick = () => {
+                        const i = Number(btn.getAttribute('data-idx'));
+                        state.cart[i].qty += 1;
+                        writeStorage(STORAGE_KEYS.CART, state.cart);
+                        updateBadges();
+                        renderCartContent();
+                    };
+                });
+
+                body.querySelectorAll('.cart-rem').forEach((btn) => {
+                    btn.onclick = () => {
+                        const i = Number(btn.getAttribute('data-idx'));
+                        state.cart.splice(i, 1);
+                        writeStorage(STORAGE_KEYS.CART, state.cart);
+                        updateBadges();
+                        renderCartContent();
+                    };
+                });
+
+                const startBtn = body.querySelector('#startCheckoutBtn');
+                if (startBtn) {
+                    startBtn.onclick = () => {
+                        showCheckoutForm = true;
+                        renderCartContent();
+                    };
+                }
+
+                const chkForm = body.querySelector('#checkoutForm');
+                if (chkForm) {
+                    chkForm.onsubmit = (e) => {
+                        e.preventDefault();
+                        const nameVal = document.getElementById('chkName').value.trim();
+                        const phoneVal = document.getElementById('chkPhone').value.trim();
+                        const emailVal = document.getElementById('chkEmail').value.trim();
+                        const addrVal = document.getElementById('chkAddress').value.trim();
+                        const payVal = document.getElementById('chkPayment').value;
+
+                        let valid = true;
+                        const setErr = (id, msg) => {
+                            const el = document.getElementById(id);
+                            el.textContent = msg;
+                            el.classList.toggle('visible', Boolean(msg));
+                            if (msg) valid = false;
+                        };
+
+                        setErr('chkNameErr', nameVal.length < 2 ? 'Name is required.' : '');
+                        setErr('chkPhoneErr', phoneVal.length < 6 ? 'Valid phone number is required.' : '');
+                        setErr('chkEmailErr', !emailVal.includes('@') ? 'Valid email is required.' : '');
+                        setErr('chkAddressErr', addrVal.length < 4 ? 'Delivery address is required.' : '');
+
+                        if (!valid) return;
+
+                        const orderNum = `ORD-DEMO-${Math.floor(1000 + Math.random() * 9000)}`;
+                        const summary = state.cart.map((c) => `${c.name} (${c.color}, ${c.storage}) × ${c.qty}`).join(', ');
+                        const countTotal = state.cart.reduce((s, c) => s + c.qty, 0);
+
+                        state.orders.unshift({
+                            id: orderNum,
+                            date: new Date().toISOString().slice(0, 10),
+                            customerName: nameVal,
+                            address: addrVal,
+                            payment: payVal,
+                            itemsCount: countTotal,
+                            itemsSummary: summary,
+                            deliveryUsd,
+                            totalUsd,
+                            status: 'Confirmed (Demo)'
+                        });
+
+                        writeStorage(STORAGE_KEYS.ORDERS, state.orders);
+                        state.cart = [];
+                        writeStorage(STORAGE_KEYS.CART, state.cart);
+                        updateBadges();
+
+                        body.innerHTML = `
+              <div class="status-banner success" style="display:block; padding:20px;">
+                <h4 style="font-size:1.1rem; margin-bottom:6px;">Order Confirmed (Demo) — ${orderNum}</h4>
+                <p style="font-size:0.88rem; margin-bottom:12px;">Thank you, ${nameVal}. Your simulated order has been saved to Order History.</p>
+                <button type="button" class="btn btn-primary btn-sm" id="viewOrdersAfterChkBtn">${t('ordersBtn')}</button>
+              </div>
+            `;
+                        document.getElementById('viewOrdersAfterChkBtn').onclick = () => {
+                            closeModal('cartModal');
+                            openOrdersModal();
+                        };
+                    };
+                }
+            }
+
+            renderCartContent();
+            openModal('cartModal');
+        }
+
+        function openFavoritesModal() {
+            const body = document.getElementById('favoritesBody');
+            const favItems = PRODUCTS.filter((p) => state.favorites.includes(p.id));
+
+            if (favItems.length === 0) {
+                body.innerHTML = `<p style="color:var(--text-secondary); padding:16px 0;">${t('favoritesEmpty')}</p>`;
+                openModal('favoritesModal');
+                return;
+            }
+
+            body.innerHTML = favItems.map((prod) => {
+                const price = formatPrice(prod.priceUsd);
+                return `
+          <div class="cart-item">
+            <div style="height:56px; background:var(--bg-elevated); border-radius:var(--radius-sm); padding:4px; display:flex; align-items:center; justify-content:center;">
+              ${generateProductSVG(prod, prod.colors[0].hex)}
+            </div>
+            <div>
+              <div style="font-weight:600;">${prod.name}</div>
+              <div style="font-size:0.82rem; color:var(--text-secondary);">${price.usd} (${price.uzs})</div>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm fav-add-btn" data-id="${prod.id}">${t('addToCart')}</button>
+              <button type="button" class="btn btn-danger btn-sm fav-rem-btn" data-id="${prod.id}">✕</button>
+            </div>
+          </div>
+        `;
+            }).join('');
+
+            body.querySelectorAll('.fav-add-btn').forEach((btn) => {
+                btn.onclick = () => {
+                    const prod = PRODUCTS.find((p) => p.id === btn.getAttribute('data-id'));
+                    if (prod) addToCart(prod, prod.colors[0].name, prod.storage[0], 1);
+                };
+            });
+
+            body.querySelectorAll('.fav-rem-btn').forEach((btn) => {
+                btn.onclick = () => {
+                    toggleFavorite(btn.getAttribute('data-id'));
+                    openFavoritesModal();
+                };
+            });
+
+            openModal('favoritesModal');
+        }
+
+        function openCompareModal() {
+            const body = document.getElementById('compareBody');
+            const selected = PRODUCTS.filter((p) => state.compare.includes(p.id));
+
+            if (selected.length < 2) {
+                body.innerHTML = `
+          <p style="color:var(--text-secondary); margin-bottom:12px;">${t('compareNeedMore')}</p>
+          <p style="font-size:0.84rem; color:var(--text-muted);">Currently selected: ${selected.length} / 2–3</p>
+        `;
+                openModal('compareModal');
+                return;
+            }
+
+            body.innerHTML = `
+        <div style="overflow-x:auto;">
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th>${t('compareTitle')}</th>
+                ${selected.map((p) => `<th>${p.name}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>${t('navHome')}</th>
+                ${selected.map((p) => `<td><div style="height:90px;">${generateProductSVG(p, p.colors[0].hex)}</div></td>`).join('')}
+              </tr>
+              <tr>
+                <th>Price (USD / UZS)</th>
+                ${selected.map((p) => {
+                const pr = formatPrice(p.priceUsd);
+                return `<td><strong>${pr.usd}</strong><br><span style="font-size:0.78rem; color:var(--text-secondary);">${pr.uzs}</span></td>`;
+            }).join('')}
+              </tr>
+              <tr>
+                <th>Storage / Edition</th>
+                ${selected.map((p) => `<td>${p.storage.join(', ')}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specDisplay')}</th>
+                ${selected.map((p) => `<td>${p.specs.display}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specChip')}</th>
+                ${selected.map((p) => `<td>${p.specs.chip}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specCamera')}</th>
+                ${selected.map((p) => `<td>${p.specs.camera}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specBattery')}</th>
+                ${selected.map((p) => `<td>${p.specs.battery}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specWeight')}</th>
+                ${selected.map((p) => `<td>${p.specs.weight}</td>`).join('')}
+              </tr>
+              <tr>
+                <th>${t('specExtra')}</th>
+                ${selected.map((p) => `<td>${p.specs.extra}</td>`).join('')}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+            openModal('compareModal');
+        }
+
+        function openOrdersModal() {
+            const body = document.getElementById('ordersBody');
+            if (state.orders.length === 0) {
+                body.innerHTML = `<p style="color:var(--text-secondary); padding:12px 0;">${t('ordersEmpty')}</p>`;
+                openModal('ordersModal');
+                return;
+            }
+
+            body.innerHTML = state.orders.map((ord) => {
+                const tot = formatPrice(ord.totalUsd);
+                return `
+          <div class="info-card" style="margin-bottom:12px;">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; margin-bottom:6px;">
+              <strong>${ord.id}</strong>
+              <span class="tag-badge tag-new">${ord.status}</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:6px;">${ord.date} • ${ord.customerName} • ${ord.payment}</div>
+            <div style="font-size:0.86rem; margin-bottom:6px;">${ord.itemsSummary}</div>
+            <div style="font-weight:600; font-size:0.9rem;">${tot.usd} (${tot.uzs})</div>
+          </div>
+        `;
+            }).join('');
+
+            openModal('ordersModal');
+        }
+
+        /* =========================================================================
+           8. LOGIN / REGISTER MODAL (PASSWORD NEVER STORED IN LOCALSTORAGE)
+           ========================================================================= */
+        function openAuthModal() {
+            const body = document.getElementById('authBody');
+            let mode = 'login'; // 'login' | 'register'
+
+            function renderAuthView() {
+                if (state.sessionUser) {
+                    body.innerHTML = `
+            <div class="info-card">
+              <div style="font-weight:600; font-size:1rem; margin-bottom:4px;">${state.sessionUser.firstName} ${state.sessionUser.lastName}</div>
+              <div style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:12px;">${state.sessionUser.email} • ${state.sessionUser.phone || ''}</div>
+              <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">
+                Demo session profile stored locally (no password stored). Real production auth requires a secure backend.
+              </p>
+              <button type="button" class="btn btn-danger btn-sm" id="logoutDemoBtn">Sign Out (Demo)</button>
+            </div>
+          `;
+                    body.querySelector('#logoutDemoBtn').onclick = () => {
+                        state.sessionUser = null;
+                        localStorage.removeItem(STORAGE_KEYS.SESSION);
+                        updateAuthButtonLabel();
+                        renderAuthView();
+                        showToast('Signed out (Demo)');
+                    };
+                    return;
+                }
+
+                body.innerHTML = `
+          <div style="display:flex; gap:8px; margin-bottom:16px;">
+            <button type="button" class="btn btn-sm ${mode === 'login' ? 'btn-primary' : 'btn-secondary'}" id="tabLoginBtn">Login</button>
+            <button type="button" class="btn btn-sm ${mode === 'register' ? 'btn-primary' : 'btn-secondary'}" id="tabRegisterBtn">Register</button>
+          </div>
+
+          ${mode === 'login' ? `
+            <form id="loginForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="loginEmail">${t('labelEmail')}</label>
+                <input type="email" id="loginEmail" class="form-control" required />
+                <div class="field-error" id="loginEmailErr"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="loginPassword">${t('labelPassword')}</label>
+                <div style="display:flex; gap:6px;">
+                  <input type="password" id="loginPassword" class="form-control" required />
+                  <button type="button" class="btn btn-secondary btn-sm" id="toggleLoginPwdBtn" aria-label="Show/Hide Password">👁</button>
+                </div>
+                <div class="field-error" id="loginPwdErr"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <button type="button" class="footer-link-btn" id="forgotPwdBtn" style="color:var(--accent);">Forgot password?</button>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Login (Demo)</button>
+              <div class="status-banner" id="authStatus"></div>
+            </form>
+          ` : `
+            <form id="registerForm" novalidate>
+              <div class="two-col" style="gap:10px;">
+                <div class="form-group">
+                  <label class="form-label" for="regFirstName">${t('labelFirstName')}</label>
+                  <input type="text" id="regFirstName" class="form-control" required />
+                  <div class="field-error" id="regFirstErr"></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="regLastName">${t('labelLastName')}</label>
+                  <input type="text" id="regLastName" class="form-control" required />
+                  <div class="field-error" id="regLastErr"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regEmail">${t('labelEmail')}</label>
+                <input type="email" id="regEmail" class="form-control" required />
+                <div class="field-error" id="regEmailErr"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regPhone">${t('labelPhone')}</label>
+                <input type="tel" id="regPhone" class="form-control" required />
+                <div class="field-error" id="regPhoneErr"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regPassword">${t('labelPassword')}</label>
+                <input type="password" id="regPassword" class="form-control" required />
+                <div class="field-error" id="regPwdErr"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="regConfirmPassword">${t('labelConfirmPassword')}</label>
+                <input type="password" id="regConfirmPassword" class="form-control" required />
+                <div class="field-error" id="regConfirmErr"></div>
+              </div>
+              <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">
+                Security note: Use a backend with password hashing for real accounts. Passwords are never saved in localStorage.
+              </p>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Create Demo Profile</button>
+              <div class="status-banner" id="authStatus"></div>
+            </form>
+          `}
+        `;
+
+                body.querySelector('#tabLoginBtn').onclick = () => { mode = 'login'; renderAuthView(); };
+                body.querySelector('#tabRegisterBtn').onclick = () => { mode = 'register'; renderAuthView(); };
+
+                const togglePwd = body.querySelector('#toggleLoginPwdBtn');
+                if (togglePwd) {
+                    togglePwd.onclick = () => {
+                        const inp = document.getElementById('loginPassword');
+                        inp.type = inp.type === 'password' ? 'text' : 'password';
+                    };
+                }
+
+                const forgotBtn = body.querySelector('#forgotPwdBtn');
+                if (forgotBtn) {
+                    forgotBtn.onclick = () => {
+                        const banner = document.getElementById('authStatus');
+                        banner.className = 'status-banner success';
+                        banner.textContent = 'Demo reset notice: In production, a reset link is sent via your authentication backend.';
+                    };
+                }
+
+                const loginForm = body.querySelector('#loginForm');
+                if (loginForm) {
+                    loginForm.onsubmit = (e) => {
+                        e.preventDefault();
+                        const email = document.getElementById('loginEmail').value.trim();
+                        const pwd = document.getElementById('loginPassword').value;
+                        let ok = true;
+
+                        const eErr = document.getElementById('loginEmailErr');
+                        const pErr = document.getElementById('loginPwdErr');
+                        eErr.textContent = !email.includes('@') ? 'Enter a valid email.' : '';
+                        eErr.classList.toggle('visible', Boolean(eErr.textContent));
+                        if (eErr.textContent) ok = false;
+
+                        pErr.textContent = pwd.length < 6 ? 'Password must be at least 6 characters.' : '';
+                        pErr.classList.toggle('visible', Boolean(pErr.textContent));
+                        if (pErr.textContent) ok = false;
+
+                        if (!ok) return;
+
+                        const derivedName = email.split('@')[0] || 'User';
+                        state.sessionUser = {
+                            firstName: derivedName.charAt(0).toUpperCase() + derivedName.slice(1),
+                            lastName: '(Demo)',
+                            email,
+                            phone: ''
+                        };
+                        writeStorage(STORAGE_KEYS.SESSION, state.sessionUser);
+                        updateAuthButtonLabel();
+                        closeModal('authModal');
+                        showToast(`Welcome, ${state.sessionUser.firstName}`);
+                    };
+                }
+
+                const regForm = body.querySelector('#registerForm');
+                if (regForm) {
+                    regForm.onsubmit = (e) => {
+                        e.preventDefault();
+                        const fn = document.getElementById('regFirstName').value.trim();
+                        const ln = document.getElementById('regLastName').value.trim();
+                        const em = document.getElementById('regEmail').value.trim();
+                        const ph = document.getElementById('regPhone').value.trim();
+                        const pw = document.getElementById('regPassword').value;
+                        const cpw = document.getElementById('regConfirmPassword').value;
+
+                        let ok = true;
+                        const mark = (id, msg) => {
+                            const el = document.getElementById(id);
+                            el.textContent = msg;
+                            el.classList.toggle('visible', Boolean(msg));
+                            if (msg) ok = false;
+                        };
+
+                        mark('regFirstErr', fn.length < 2 ? 'First name required.' : '');
+                        mark('regLastErr', ln.length < 2 ? 'Last name required.' : '');
+                        mark('regEmailErr', !em.includes('@') ? 'Valid email required.' : '');
+                        mark('regPhoneErr', ph.length < 6 ? 'Phone number required.' : '');
+                        mark('regPwdErr', pw.length < 6 ? 'Minimum 6 characters.' : '');
+                        mark('regConfirmErr', pw !== cpw ? 'Passwords do not match.' : '');
+
+                        if (!ok) return;
+
+                        state.sessionUser = { firstName: fn, lastName: ln, email: em, phone: ph };
+                        writeStorage(STORAGE_KEYS.SESSION, state.sessionUser);
+                        updateAuthButtonLabel();
+                        closeModal('authModal');
+                        showToast(`Profile created: ${fn}`);
+                    };
+                }
+            }
+
+            renderAuthView();
+            openModal('authModal');
+        }
+
+        /* =========================================================================
+           9. HIGHLIGHTS, REVIEWS, FAQ & CONTACT FORM
+           ========================================================================= */
+        function renderHighlights() {
+            const newBox = document.getElementById('newProductsList');
+            const bestBox = document.getElementById('bestSellersList');
+
+            const newest = PRODUCTS.filter((p) => p.isNew).slice(0, 4);
+            const popular = PRODUCTS.filter((p) => p.isPopular).slice(0, 4);
+
+            const renderMiniList = (target, list) => {
+                target.innerHTML = list.map((p) => {
+                    const pr = formatPrice(p.priceUsd);
+                    return `
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--bg-page); border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+              <div>
+                <div style="font-weight:600; font-size:0.9rem;">${p.name}</div>
+                <div style="font-size:0.76rem; color:var(--text-secondary);">${p.category} • ${pr.usd}</div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mini-open-btn" data-id="${p.id}">${t('viewDetails')}</button>
+            </div>
+          `;
+                }).join('');
+
+                target.querySelectorAll('.mini-open-btn').forEach((b) => {
+                    b.onclick = () => openProductDetail(b.getAttribute('data-id'));
+                });
+            };
+
+            renderMiniList(newBox, newest);
+            renderMiniList(bestBox, popular);
+        }
+
+        function renderReviews() {
+            const reviews = [
+                {
+                    author: 'Dilnoza R. • Tashkent',
+                    stars: '★★★★★',
+                    text: {
+                        en: 'Clean interface, instant category filtering, and easy side-by-side comparison across models.',
+                        uz: 'Qulay interfeys, tezkor filtrlash va modellarni yonma-yon taqqoslash imkoniyati yoqdi.',
+                        ru: 'Удобный интерфейс, мгновенная фильтрация и наглядное сравнение моделей.'
+                    }
+                },
+                {
+                    author: 'Marcus T. • Demo Buyer',
+                    stars: '★★★★★',
+                    text: {
+                        en: 'Switching between English, Uzbek, and Russian updates every label and card description smoothly.',
+                        uz: 'Ingliz, o‘zbek va rus tillari o‘rtasida o‘tish barcha matnlarni tez yangilaydi.',
+                        ru: 'Переключение между английским, узбекским и русским языками работает мгновенно.'
+                    }
+                },
+                {
+                    author: 'Timur K. • Samarkand',
+                    stars: '★★★★☆',
+                    text: {
+                        en: 'Dark and Light modes look crisp on both desktop and mobile screens without horizontal scroll.',
+                        uz: 'Dark va Light rejimlari kompyuter va telefonda ham juda chiroyli ko‘rinadi.',
+                        ru: 'Тёмная и светлая темы аккуратно смотрятся на ПК и смартфоне без горизонтального скролла.'
+                    }
+                }
+            ];
+
+            document.getElementById('reviewsGrid').innerHTML = reviews.map((r) => `
+        <div class="info-card">
+          <div style="color:var(--warning); margin-bottom:8px;">${r.stars}</div>
+          <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:12px;">"${r.text[state.lang] || r.text.en}"</p>
+          <div style="font-weight:600; font-size:0.84rem;">${r.author}</div>
+        </div>
+      `).join('');
+        }
+
+        function renderFAQ() {
+            const faqs = [
+                {
+                    q: {
+                        en: 'Are the prices and specifications in this store real or demo data?',
+                        uz: 'Do‘kondagi narxlar va texnik ma’lumotlar haqiqiymi yoki demo?',
+                        ru: 'Являются ли цены и характеристики реальными или демо-данными?'
+                    },
+                    a: {
+                        en: 'All catalog items, pricing, and specs are illustrative demo data created for interactive storefront testing.',
+                        uz: 'Katalogdagi barcha mahsulotlar, narxlar va tavsiflar namoyish uchun mo‘ljallangan demo ma’lumotlardir.',
+                        ru: 'Все товары, цены и характеристики носят демонстрационный характер для проверки интерфейса.'
+                    }
+                },
+                {
+                    q: {
+                        en: 'How does Product Comparison work?',
+                        uz: 'Mahsulotlarni taqqoslash qanday ishlaydi?',
+                        ru: 'Как работает сравнение товаров?'
+                    },
+                    a: {
+                        en: 'Click the scale icon (⚖️) on 2 or 3 cards, then click Compare to inspect prices, storage, and specs together.',
+                        uz: '2 yoki 3 ta kartochkadagi tarozi (⚖️) belgisini bosing va Compare tugmasi orqali solishtiring.',
+                        ru: 'Нажмите значок весов (⚖️) на 2–3 карточках и откройте окно сравнения.'
+                    }
+                },
+                {
+                    q: {
+                        en: 'Is my data saved when I refresh the page?',
+                        uz: 'Sahifa yangilanganda ma’lumotlar saqlanadimi?',
+                        ru: 'Сохраняются ли данные при обновлении страницы?'
+                    },
+                    a: {
+                        en: 'Language, theme, cart, favorites, comparison list, and demo orders are persisted in localStorage (never passwords).',
+                        uz: 'Til, rejim, savatcha, sevimlilar, taqqoslash va demo buyurtmalar localStorage’da saqlanadi (parollar emas).',
+                        ru: 'Язык, тема, корзина, избранное, сравнение и демо-заказы сохраняются в localStorage (без паролей).'
+                    }
+                }
+            ];
+
+            const list = document.getElementById('faqList');
+            list.innerHTML = faqs.map((f, i) => `
+        <div class="faq-item ${i === 0 ? 'open' : ''}">
+          <button type="button" class="faq-trigger">
+            <span>${f.q[state.lang] || f.q.en}</span>
+            <span>+</span>
+          </button>
+          <div class="faq-answer">${f.a[state.lang] || f.a.en}</div>
+        </div>
+      `).join('');
+
+            list.querySelectorAll('.faq-trigger').forEach((btn) => {
+                btn.onclick = () => {
+                    btn.parentElement.classList.toggle('open');
+                };
+            });
+        }
+
+        function bindEvents() {
+            // Theme & Language
+            document.getElementById('themeToggleBtn').onclick = () => {
+                state.theme = state.theme === 'light' ? 'dark' : 'light';
+                applyTheme();
+            };
+
+            document.getElementById('langSelect').onchange = (e) => {
+                state.lang = e.target.value;
+                applyLanguage();
+            };
+
+            // Navigation category buttons (desktop, mobile drawer, footer)
+            const mobileDrawer = document.getElementById('mobileDrawer');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+            hamburgerBtn.onclick = () => {
+                const isOpen = mobileDrawer.classList.toggle('open');
+                hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+                mobileDrawer.setAttribute('aria-hidden', String(!isOpen));
+            };
+
+            document.querySelectorAll('[data-nav-cat]').forEach((btn) => {
+                btn.onclick = () => {
+                    state.category = btn.getAttribute('data-nav-cat');
+                    syncNavActiveState();
+                    renderCategoryPills();
+                    renderCatalog();
+                    mobileDrawer.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                    document.getElementById('catalogSection').scrollIntoView({ behavior: 'smooth' });
+                };
+            });
+
+            document.getElementById('brandHomeBtn').onclick = () => {
+                state.category = 'all';
+                state.search = '';
+                state.sort = 'featured';
+                document.getElementById('searchInput').value = '';
+                document.getElementById('sortSelect').value = 'featured';
+                syncNavActiveState();
+                renderCategoryPills();
+                renderCatalog();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Search, Sort & Reset
+            const searchInput = document.getElementById('searchInput');
+            searchInput.oninput = (e) => {
+                state.search = e.target.value;
+                renderCatalog();
+            };
+
+            document.getElementById('searchClearBtn').onclick = () => {
+                searchInput.value = '';
+                state.search = '';
+                renderCatalog();
+            };
+
+            document.getElementById('sortSelect').onchange = (e) => {
+                state.sort = e.target.value;
+                renderCatalog();
+            };
+
+            document.getElementById('resetFiltersBtn').onclick = () => {
+                state.category = 'all';
+                state.search = '';
+                state.sort = 'featured';
+                searchInput.value = '';
+                document.getElementById('sortSelect').value = 'featured';
+                syncNavActiveState();
+                renderCategoryPills();
+                renderCatalog();
+            };
+
+            // Top bar & modal triggers
+            document.getElementById('navSearchBtn').onclick = () => {
+                document.getElementById('catalogSection').scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => searchInput.focus(), 250);
+            };
+
+            document.getElementById('navCartBtn').onclick = () => openCartModal(false);
+            document.getElementById('footerCartBtn').onclick = () => openCartModal(false);
+
+            document.getElementById('navFavoritesBtn').onclick = () => openFavoritesModal();
+            document.getElementById('footerFavBtn').onclick = () => openFavoritesModal();
+
+            document.getElementById('navCompareBtn').onclick = () => openCompareModal();
+            document.getElementById('openCompareModalBtn').onclick = () => openCompareModal();
+            document.getElementById('footerCompareBtn').onclick = () => openCompareModal();
+
+            document.getElementById('openOrdersModalBtn').onclick = () => openOrdersModal();
+            document.getElementById('footerOrdersBtn').onclick = () => openOrdersModal();
+            document.getElementById('mobileOrdersBtn').onclick = () => {
+                mobileDrawer.classList.remove('open');
+                openOrdersModal();
+            };
+
+            document.getElementById('navAuthBtn').onclick = () => openAuthModal();
+            document.getElementById('mobileAuthBtn').onclick = () => {
+                mobileDrawer.classList.remove('open');
+                openAuthModal();
+            };
+
+            // Modal close buttons & backdrop click
+            document.querySelectorAll('[data-close-modal]').forEach((btn) => {
+                btn.onclick = () => closeModal(btn.getAttribute('data-close-modal'));
+            });
+
+            document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+                backdrop.onclick = (e) => {
+                    if (e.target === backdrop) backdrop.classList.remove('open');
+                };
+            });
+
+            // Contact form validation & submission
+            document.getElementById('contactForm').onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const phone = document.getElementById('contactPhone').value.trim();
+                const msg = document.getElementById('contactMessage').value.trim();
+
+                let ok = true;
+                const errSet = (id, text) => {
+                    const el = document.getElementById(id);
+                    el.textContent = text;
+                    el.classList.toggle('visible', Boolean(text));
+                    if (text) ok = false;
+                };
+
+                errSet('contactNameErr', name.length < 2 ? 'Please enter your name.' : '');
+                errSet('contactEmailErr', !email.includes('@') ? 'Please enter a valid email.' : '');
+                errSet('contactPhoneErr', phone.length < 6 ? 'Please enter a phone number.' : '');
+                errSet('contactMessageErr', msg.length < 5 ? 'Please enter a message.' : '');
+
+                const banner = document.getElementById('contactStatus');
+                if (!ok) {
+                    banner.className = 'status-banner error';
+                    banner.textContent = 'Please fix the highlighted fields above.';
+                    return;
+                }
+
+                banner.className = 'status-banner success';
+                banner.textContent = `Thank you, ${name}. Your demo message has been recorded.`;
+                e.target.reset();
+            };
+        }
+
+        // Initialize application
+        window.addEventListener('DOMContentLoaded', () => {
+            applyTheme();
+            bindEvents();
+            applyLanguage();
+        });
+    </script>
+</body>
+
+</html>
